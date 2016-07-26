@@ -31,6 +31,7 @@ module.exports =
 
           .url("https://app.videoremix.io/editor/28082/remix")
           .useXpath()
+          .pause(3000)
           .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 15000)
           .waitForElementVisible("//button[@type='button']", 10000)
           .click("//button[@type='button']")
@@ -45,9 +46,17 @@ module.exports =
           .waitForElementVisible("//span[contains(text(),'image')]", 3000)
           .click("//span[contains(text(),'image')]")
           .waitForElementVisible("//input[@id='image-url-input']", 3000)
-          .setValue("//input[@id='image-url-input']", "http://www.gettyimages.in/gi-resources/images/Editorial-Images/Entertainment.jpg", "Keys.ENTER")
+          .clearValue("//input[@id='image-url-input']")
+          .pause(3000)
+          .setValue("//input[@id='image-url-input']", "http://www.gettyimages.in/gi-resources/images/Editorial-Images/Entertainment.jpg")
       //    .sendKeys("//input[@id='image-url-input']", .Keys.ENTER)
-          .waitForElementVisible("//img[@src='http://www.gettyimages.in/gi-resources/images/Editorial-Images/Entertainment.jpg']", 6000)
+      //    .click("//input[@id='image-url-input']")
+
+
+          .keys(['\uE006'])
+          .pause(30000)
+
+          .waitForElementVisible("//img[@src='http://www.gettyimages.in/gi-resources/images/Editorial-Images/Entertainment.jpg']", 10000)
           .click("//button[contains(text(),'Adobe Editor')]")
           .waitForElementVisible("//span[@id='avpw_breadcrumb_header']", 6000)
           .waitForElementVisible("//span[contains(text(),'Frames')]", 3000)
@@ -63,23 +72,35 @@ module.exports =
           //take screenshot
 
 //step 5 - Save
-
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
+          .pause(5000)
+          .waitForElementVisible("//button[contains(text(),'Save')]", 4000)
           .click("//button[contains(text(),'Save')]")
+          .waitForElementVisible("//input[@class='input title-input']", 2000)
           .setValue("//input[@class='input title-input']",new Date())
-          .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
+          .pause(5000)
+          .waitForElementVisible("//span[contains(text(),'Save')]", 5000)
           .click("//span[contains(text(),'Save')]")
           .pause(3000)
-          .waitForElementVisible("//div[@id='preview-icon']", 3000)
+          .waitForElementVisible("//div[@id='preview-icon']", 5000)
           .click("//div[@id='preview-icon']")
           .pause(10000)
-
+          .window_handles(function(result)
+          {
+                  var temp = result.value[1];
+                  this.switchWindow(temp);
+          })
 
 // step 7 - Play preview video
 
           .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
           .click("//div[@id='previewDialogbody']")
-          .pause(25000)
+          .pause(3000)
+          .frame('previewVideo', function () {
+              client
+                  .click("//span[@id='controls-play']")
+                  .pause(4000)
+                  .click("//span[@id='controls-play']")
+          })
           .end();
           //take screenshot
   }

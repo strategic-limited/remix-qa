@@ -5,7 +5,7 @@ module.exports =
   'Playback Early Personalization Gif Vid': function(client)
    {
 // Step 1 - Login to VR editor
-   client
+        client
         .windowMaximize()
         .url(host)
         .useCss()
@@ -42,7 +42,7 @@ module.exports =
         .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif")
         .waitForElementVisible("//a[@id='get-media-btn']", 3000)
         .click("//a[@id='get-media-btn']")
-        .waitForElementPresent("//div[@data-popcorn-plugin-type='image']", 3000)
+        .waitForElementVisible("//div[@data-popcorn-plugin-type='image']", 3000)
         .click("//div[@data-popcorn-plugin-type='image']")
         .waitForElementVisible("(//div[@class='title'])[1]", 3000)
 
@@ -51,17 +51,22 @@ module.exports =
         .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
         .click("//button[contains(text(),'Save')]")
         .setValue("//input[@class='input title-input']",new Date())
+        .click("//li[@data-source='https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif']")
         .click("//span[contains(text(),'Save')]")
         .pause(3000)
         .click("//div[@id='preview-icon']")
 
-
 // step 8 - Play preview video
 
-    .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-    .click("//div[@id='previewDialogbody']")
-    .pause(25000)
-    .end();
+        .pause(5000)
+        .frame('previewVideo', function () {
+            client
+                .click("//span[@id='controls-play']")
+                .pause(4000)
+                .click("//span[@id='controls-play']")
+                .pause(4000)
+        })
+        .end();
 
   }
 

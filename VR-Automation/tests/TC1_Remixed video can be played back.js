@@ -57,8 +57,7 @@ module.exports =
     .waitForElementVisible("//span[@id='identity']", 10000)
 
 
-// Step 5 - remix editor - save video
-
+// Step 4 - remix editor - save video
     .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
     .click("//button[contains(text(),'Save')]")
     .setValue("//input[@class='input title-input']",new Date())
@@ -67,19 +66,24 @@ module.exports =
     .pause(3000)
     .waitForElementVisible("//div[@id='preview-icon']", 3000)
     .click("//div[@id='preview-icon']")
+    .pause(10000)
 
-// Step 6 - Click on 'Connect with Facebook'
+// Step 5  - Click on 'Connect with Facebook' button
 
-    .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
+    .waitForElementVisible("//div[@id='previewDialogbody']", 10000)
     .click("//div[@id='previewDialogbody']")
     .click("//div/button[@id='useFbButton']")
+    .pause(7000)
 
-//Step 7 - Accept the app approval
+
+//Step 6 - facebook App Approval
 
     .window_handles(function(result)
     {
-                var temp = result.value[2];
-                this.switchWindow(temp);
+
+        var temp = result.value[2];
+        this.switchWindow(temp);
+
     })
 
     .useCss()
@@ -88,34 +92,44 @@ module.exports =
     .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
     .click("//button[@name='__CONFIRM__']")
     .pause(10000)
+    .window_handles(function(result)
+    {
+        var temp = result.value[1];
+        this.switchWindow(temp);
 
+    })
 
-// step 8 - Play preview video
-
+// step 7 - Play preview video
     .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
     .click("//div[@id='previewDialogbody']")
-    .pause(25000)
+    .frame('previewVideo', function () {
+        client
+            .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+            .click("//span[@id='controls-play']")
+            .pause(4000)
+            .click("//span[@id='controls-play']")
+            .pause(4000)
+    })
 
-
-// step 9 - navigate to facebook and cancel the VR App
+// step 8 - navigate to facebook and cancel the VR App
 
     .execute(function(newWindow)
-            {
-                window.open("https://www.facebook.com/settings?tab=applications", null, "height=1024,width=1524")
-            }, [host])
+    {
+        window.open("https://www.facebook.com/settings?tab=applications", null, "height=1024,width=1524")
+    }, [host])
 
-      .useCss()
-      .waitForElementVisible('body', 3000)
-      .useXpath()
-      .waitForElementVisible("//div[contains(text(),'videoremix.io')]", 5000)
-      .click("//div[@class='clearfix _3fig']")
-      .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-      .click("//a[contains(text(),'Remove App')]")
-      .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
-      .click("//input[@name='ok']")
-      .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]")
-      .pause(6000)
-      .end();
+    .useCss()
+    .waitForElementVisible('body', 3000)
+    .useXpath()
+    .waitForElementVisible("//div[contains(text(),'videoremix.io')]", 5000)
+    .click("//div[@class='clearfix _3fig']")
+    .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
+    .click("//a[contains(text(),'Remove App')]")
+    .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
+    .click("//input[@name='ok']")
+    .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]")
+    .pause(6000)
+    .end();
 
     }
 };

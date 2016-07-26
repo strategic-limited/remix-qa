@@ -78,7 +78,8 @@ module.exports =
 
 
 
-          // Step 7 - verify Social campaign and move to next step
+// Step 7 - verify Social campaign and move to next step
+
                     .window_handles(function(result)
                         {
                                   var temp = result.value[2];
@@ -98,7 +99,7 @@ module.exports =
                       .pause(4000)
 
 
-          //Step 9 - facebook App Approval
+//Step 9 - facebook App Approval
 
                         .window_handles(function(result)
                         {
@@ -124,8 +125,8 @@ module.exports =
                         })
 
 
+// Step 8 - Social campaign facebook pages - make a selection
 
-          // Step 8 - Social campaign facebook pages - make a selection
                           .waitForElementVisible("//select[@id='fbTabs']", 4000)
                           .click("//select[@id='fbTabs']")
                           .pause(2000)
@@ -179,7 +180,7 @@ module.exports =
 
                     //Step 9 - Open facebook and verify the new tab created in step 8
 
-                              .end();
+      .end();
 
-                            }
-                      };
+      }
+  };

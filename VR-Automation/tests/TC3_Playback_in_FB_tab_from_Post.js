@@ -10,7 +10,7 @@ module.exports =
         .url(host)
 			  .waitForElementPresent("body" , 3000)
 			  .useXpath()
-        .setValue("//input[@id='email']","test15july.1@gmail.com")
+        .setValue("//input[@id='email']","dbmjxac_fergiewitz_1468246589@tfbnw.net")
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")

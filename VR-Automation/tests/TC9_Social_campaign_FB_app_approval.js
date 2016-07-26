@@ -12,7 +12,7 @@ module.exports =
         .url(host)
 			  .waitForElementPresent("body" , 3000)
 			  .useXpath()
-        .setValue("//input[@id='email']","nfhuful_valtchanovwitz_1468245450@tfbnw.net")
+        .setValue("//input[@id='email']","hubjbxj_valtchanovescu_1468245451@tfbnw.net")
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
@@ -32,7 +32,7 @@ module.exports =
             })
 
       		.useCss()
-      		.waitForElementVisible('body', 3000)
+      		.waitForElementVisible('body', 5000)
       		.useXpath()
           .waitForElementPresent("//input[@name='uid']" , 2000)
           .setValue("//input[@name='uid']","test03@gmail.com")
@@ -45,7 +45,7 @@ module.exports =
           .useCss()
           .waitForElementVisible('body', 3000)
           .useXpath()
-          .waitForElementPresent("//h2" , 3000)
+          .waitForElementPresent("//h2" , 5000)
           .click("//button[@title='Close']")
           .useCss()
           .waitForElementVisible('body', 2000)
@@ -71,42 +71,78 @@ module.exports =
 
 // Step 6 - Go to Social Campaign
 
-          .pause(3000)
+          .pause(4000)
           .waitForElementVisible("//a[@id='embedSocialBtn']", 2000)
           .click("//a[@id='embedSocialBtn']")
           .pause(10000)
 
+// Step 7 - verify Social campaign and move to FB app approval step
 
-// Step  - Verify app approval
+          .window_handles(function(result)
+          {
+                  var temp = result.value[2];
+                  this.switchWindow(temp);
+          })
+
+          .waitForElementVisible("//div[@id='personalization-modal']", 10000)
+          .click("//div[@id='personalization-modal']")
+        //.waitForElementVisible("//a[@id='start']",10000)
+          .waitForElementVisible("//a[@id='hideform1']",10000)
+          .click("//a[@id='hideform1']")
+          .pause(4000)
+          .waitForElementVisible("//a[@id='connectWithFbButton']", 6000)
+          .click("//a[@id='connectWithFbButton']")
+          .pause(4000)
+
+//Step 8 - facebook App Approval
+
+          .window_handles(function(result)
+                    {
+                              var temp = result.value[2];
+                              this.switchWindow(temp);
+                    })
+
+          .useCss()
+          .waitForElementVisible('body', 3000)
+          .useXpath()
+          .pause(5000)
+          .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
+          .click("//button[@name='__CONFIRM__']")
+          .pause(10000)
+          .click("//button[@name='__CONFIRM__']")
+          .pause(10000)
+        //  .waitForElementVisible("//select[@id='fbTabs']", 4000)
+
+
+// Step 9 - Verify app approval on Facebook
 
           .execute(function(newWindow)
           {
               window.open("https://www.facebook.com/settings?tab=applications", null, "height=1024,width=1524")
           }, [host])
 
+          .window_handles(function(result)
+        			{
+                        var temp = result.value[1];
+                        this.switchWindow(temp);
+              })
+
           .useCss()
-          .waitForElementVisible('body', 3000)
+          .waitForElementVisible('body', 5000)
           .useXpath()
+          .pause(5000)
           .waitForElementVisible("//div[contains(text(),'videoremix publisher')]", 5000)
 
+// Step 10 - Cancel app approval
 
-// Step 7 - verify Social campaign and move to next step
+          .click("//div[@class='clearfix _3fig']")
+          .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
+          .click("//a[contains(text(),'Remove App')]")
+          .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
+          .click("//input[@name='ok']")
+          .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]")
+          .pause(6000)
+          .end();
 
-                    .window_handles(function(result)
-                    {
-                        var temp = result.value[2];
-                        this.switchWindow(temp);
-                    })
-
-                    .waitForElementVisible("//div[@id='personalization-modal']", 10000)
-                    .click("//div[@id='personalization-modal']")
-                    //.waitForElementVisible("//a[@id='start']",10000)
-                    .waitForElementVisible("//a[@id='hideform1']",10000)
-                    .click("//a[@id='hideform1']")
-                    .waitForElementVisible("//a[@id='connectWithFbButton']", 6000)
-                    
-
-                    .end();
-
-                  }
-            };
+        }
+};

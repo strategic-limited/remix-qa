@@ -18,24 +18,30 @@ module.exports =
       .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
       .pause(3000)
 
-// Step 2 -  after remix login closing pop up.
-        .useCss()
-        .waitForElementVisible('body', 3000)
-        .useXpath()
-        .waitForElementPresent("//h2" , 3000)
-        .click("//button[@title='Close']")
-        .useCss()
-        .waitForElementVisible('body', 2000)
+/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
+                        .useCss()
+                        .waitForElementVisible('body', 3000)
+                        .useXpath()
+                        .waitForElementPresent("//h2" , 3000)
+                        .click("//button[@title='Close']")
+                        .useCss()
+                        .waitForElementVisible('body', 2000) */
 
 // Step 4 - Open remix Editor
 
           .url("https://app.videoremix.io/editor/30722/remix")
           .useXpath()
-          .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 15000)
-          .waitForElementVisible("//button[@type='button']", 10000)
-          .click("//button[@type='button']")
-          .refresh()
-          .waitForElementVisible("//span[@id='identity']", 10000)
+          .pause(5000)
+        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
+          .waitForElementVisible("//button[@type='button']", 2000)
+          .click("//button[@type='button']") */                 // this has been removed from editor
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
+          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
+          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
+          .pause(3000)
+          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
+          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
 //step 5 - Save
 
@@ -45,14 +51,24 @@ module.exports =
           .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
           .click("//span[contains(text(),'Save')]")
           .pause(3000)
+
+          .waitForElementVisible("//button[contains(text(),'Save')]", 2000) //delete these three lines after test passes
+          .click("//button[contains(text(),'Save')]")
+          .pause(3000)
+
           .waitForElementVisible("//div[@id='preview-icon']", 3000)
           .click("//div[@id='preview-icon']")
+          .pause(5000)
 
 // Step 6 - Verify 'Connect with Facebook' and 'Enter Without Facebook' should be available
 
           .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-          .click("//div[@id='previewDialogbody']")
-          .click("//div/button[@id='useFbButton']")
+          .frame('previewVideo', function () {
+              client
+                  .waitForElementVisible("//div/button[@id='useFbButton']", 9000)
+                  .waitForElementVisible("//button[@id='withoutFbButton']", 9000)
+                  .pause(4000)
+          })
           .end();
             }
   };

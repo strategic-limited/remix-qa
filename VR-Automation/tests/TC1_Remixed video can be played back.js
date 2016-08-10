@@ -10,7 +10,7 @@ module.exports =
       .url(host)
 			.waitForElementPresent("body" , 3000)
 			.useXpath()
-      .setValue("//input[@id='email']","fbiravo_seligsteinescu_1468245839@tfbnw.net")
+      .setValue("//input[@id='email']","houdelh_panditwitz_1468246588@tfbnw.net")
       .setValue("//input[@id='pass']","Abcdefgh@123")
 			.waitForElementPresent("//input[@type='submit']" , 3000)
       .click("//input[@type='submit']")
@@ -27,6 +27,7 @@ module.exports =
                 this.switchWindow(temp);
             })
 			.useCss()
+      .pause(3000)
 			.waitForElementVisible('body', 3000)
 			.useXpath()
       .waitForElementPresent("//input[@name='uid']" , 2000)
@@ -35,26 +36,33 @@ module.exports =
 			.click("(//button[@ng-click='user.password && submitPassword()'])[2]")
       .pause(3000)
 
-// Step 3 -  after remix login closing pop up.
-      .useCss()
-      .waitForElementVisible('body', 3000)
-      .useXpath()
-      .waitForElementPresent("//h2" , 3000)
-      .click("//button[@title='Close']")
-      .useCss()
-      .waitForElementVisible('body', 2000)
+/* // Step 3 -  after remix login closing pop up. (This functionality has been removed)
+              .useCss()
+              .waitForElementVisible('body', 3000)
+              .useXpath()
+              .waitForElementPresent("//h2" , 3000)
+              .click("//button[@title='Close']")
+              .useCss()
+              .waitForElementVisible('body', 2000) */
+
+// Step 3 - After remix login verifying Templates pages
+      .waitForElementVisible("//a[@data-section='templates']", 5000)
 
 // Step 4 - Open remix Editor
 
     .url("https://app.videoremix.io/editor/27102/remix")
     .useXpath()
-    .pause(3000)
-    .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
+    .pause(5000)
+  /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
     .waitForElementVisible("//button[@type='button']", 2000)
-    .click("//button[@type='button']")
-    .refresh()
+    .click("//button[@type='button']") */                 // this has been removed from editor
+    .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+    .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
+    .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
+    .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
     .pause(3000)
-    .waitForElementVisible("//span[@id='identity']", 10000)
+    .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
+    .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
 
 // Step 4 - remix editor - save video
@@ -64,17 +72,20 @@ module.exports =
     .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
     .click("//span[contains(text(),'Save')]")
     .pause(3000)
+
     .waitForElementVisible("//div[@id='preview-icon']", 3000)
     .click("//div[@id='preview-icon']")
     .pause(10000)
 
 // Step 5  - Click on 'Connect with Facebook' button
 
-    .waitForElementVisible("//div[@id='previewDialogbody']", 10000)
-    .click("//div[@id='previewDialogbody']")
-    .click("//div/button[@id='useFbButton']")
-    .pause(7000)
-
+.waitForElementVisible("//div[@id='previewDialogbody']", 5000)
+.frame('previewVideo', function () {
+    client
+        .waitForElementVisible("//div/button[@id='useFbButton']", 9000)
+        .click("//div/button[@id='useFbButton']")
+        .pause(7000)
+})
 
 //Step 6 - facebook App Approval
 
@@ -100,6 +111,7 @@ module.exports =
     })
 
 // step 7 - Play preview video
+
     .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
     .click("//div[@id='previewDialogbody']")
     .frame('previewVideo', function () {
@@ -113,21 +125,16 @@ module.exports =
 
 // step 8 - navigate to facebook and cancel the VR App
 
-    .execute(function(newWindow)
-    {
-        window.open("https://www.facebook.com/settings?tab=applications", null, "height=1024,width=1524")
-    }, [host])
-
-    .useCss()
-    .waitForElementVisible('body', 3000)
-    .useXpath()
-    .waitForElementVisible("//div[contains(text(),'videoremix.io')]", 5000)
-    .click("//div[@class='clearfix _3fig']")
+    .url("https://www.facebook.com/settings?tab=applications")
+    .pause(10000)
+    .waitForElementVisible("//div[@id='u_1_0']", 5000)
+    .pause(7000)
+    .click("//div[@id='u_1_0']")
     .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
     .click("//a[contains(text(),'Remove App')]")
     .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
     .click("//input[@name='ok']")
-    .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]")
+    .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]", 3000)
     .pause(6000)
     .end();
 

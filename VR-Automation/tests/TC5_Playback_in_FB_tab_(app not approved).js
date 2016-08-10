@@ -16,37 +16,19 @@ module.exports =
       .click("//a[@id='u_0_9']")
       .pause(5000)
 
+      .frame(0, function() {
+      client
 
-
-
-      .frame('1', function ()
-      {
-        client
-      //  .waitForElementVisible("//button[@id='withoutFbButton']", 5000)
-        //.click("(//div[@id='pagelet_app_runner'])[2]")
-        .click("((//div[@class='connect-fb-btn-container'])/button)[2]")
-        //.pause(5000)
-        //.click("//button[@id='withoutFbButton']")
-        //.click("//button[contains(text(),'Enter without Facebook')]")
-        .pause(5000)
-      })
-
-
-
-
-      .waitForElementVisible("//div[@id='controls-big-play-button']", 6000)
-      .click("//div[@id='controls-big-play-button']")
-
-      .frame('previewVideo', function () {
-          client
-              .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-      })
-
-
-      .end();
-    }
+      .waitForElementVisible("//button[@id='withoutFbButton']", 5000)
+      .click("//button[@id='withoutFbButton']")
+      .pause(5000)
+      .click("//span[@id='controls-play']")
+      .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+      .click("//span[@id='controls-play']")
+      .pause(4000)
+      .click("//span[@id='controls-play']")
+      .pause(4000)
+    })
+       .end();
+}
 };

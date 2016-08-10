@@ -18,25 +18,33 @@ module.exports =
       .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
       .pause(3000)
 
-// Step 2 -  after remix login closing pop up.
-        .useCss()
-        .waitForElementVisible('body', 3000)
-        .useXpath()
-        .waitForElementPresent("//h2" , 3000)
-        .click("//button[@title='Close']")
-        .useCss()
-        .waitForElementVisible('body', 2000)
+/* // Step 3 -  after remix login closing pop up. (This functionality has been removed)
+                        .useCss()
+                        .waitForElementVisible('body', 3000)
+                        .useXpath()
+                        .waitForElementPresent("//h2" , 3000)
+                        .click("//button[@title='Close']")
+                        .useCss()
+                        .waitForElementVisible('body', 2000) */
+
+// Step 3 - After remix login verifying Templates pages
+          .waitForElementVisible("//a[@data-section='templates']", 3000)
 
 // Step 4 - Open remix Editor
 
           .url("https://app.videoremix.io/editor/28082/remix")
           .useXpath()
+          .pause(5000)
+        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
+          .waitForElementVisible("//button[@type='button']", 2000)
+          .click("//button[@type='button']") */                 // this has been removed from editor
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
+          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
+          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
           .pause(3000)
-          .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 15000)
-          .waitForElementVisible("//button[@type='button']", 10000)
-          .click("//button[@type='button']")
-          .refresh()
-          .waitForElementVisible("//span[@id='identity']", 10000)
+          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
+          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
 // Step 5 - Add Image Element
           .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
@@ -69,7 +77,8 @@ module.exports =
           .click("//a[contains(text(),'Apply')]")
           .waitForElementVisible("//a[@id='avpw_save_button']", 3000)
           .click("//a[@id='avpw_save_button']")
-          //take screenshot
+          .waitForElementVisible("(//div[@class='title'])[1]", 3000)
+          .click("//span[@class='icon icon-white icon-only icon-play']")
 
 //step 5 - Save
           .pause(5000)
@@ -102,6 +111,6 @@ module.exports =
                   .click("//span[@id='controls-play']")
           })
           .end();
-          //take screenshot
+
   }
 };

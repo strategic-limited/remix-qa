@@ -2,7 +2,7 @@ var host = 'https://app.videoremix.io/login';
 module.exports =
 {
 
-  'Check Editing images from Adobe Editor': function(client)
+  'Add all Social Plugins and check in playback': function(client)
    {
 
 // Step 1 - Login to VR editor
@@ -29,7 +29,7 @@ module.exports =
 
 // Step 4 - Open remix Editor
 
-          .url("https://app.videoremix.io/editor/28082/remix")
+          .url("https://app.videoremix.io/editor/28142/remix")
           .useXpath()
           .pause(5000)
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
@@ -43,51 +43,70 @@ module.exports =
           .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
           .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
-// Step 5 - Add Image Element
+// Step 5 - Add all social plugins
+
           .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
           .pause(5000)
           .click("//span[@class='icon icon-white icon-plus']")
-          .pause(5000)
-          .waitForElementVisible("//span[contains(text(),'image')]", 3000)
-          .click("//span[contains(text(),'image')]")
-          .waitForElementVisible("//button[contains(text(),'Youzign')]", 6000)
-          .click("//button[contains(text(),'Youzign')]")
-          .waitForElementVisible("//h4[contains(text(),'Your Designs')]", 6000)
-          .waitForElementVisible("(//div[@class='data centeredImageContainer'])[1]", 3000)
-          .click("(//div[@class='data centeredImageContainer'])[1]")
           .pause(3000)
-          .click("//span[@class='icon icon-white icon-only icon-play']")
-          //take screenshot
+          .waitForElementVisible("//span[contains(text(),'Personalized Text')]", 2000)
+          .moveToElement("//span[contains(text(),'Personalized Text')]", 100 , 100)
+          //.click("//span[contains(text(),'Personalized Text')]")
 
-// Step 6 - Save
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-          .click("//button[contains(text(),'Save')]")
-          .setValue("//input[@class='input title-input']",new Date())
-          .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-          .click("//span[contains(text(),'Save')]")
+
+.frame('intercom-frame', function ()
+{
+    client
+    .click("//div[@class='butter-editor-body scrollbar-container'"]);
+        .execute('scrollTo(0,3000)');
+        .mouseButtonDown('0');
+        .click("//span[contains(text(),'social')]");
+})
+
+
+
+
+          /*.waitForElementVisible("(//div[@class='butter-scroll-handle'])[3]", 5000)
+          .useCss()
+          .moveToElement('.butter-scroll-handle',200 , 600)
+          .mouseButtonDown(0)
+          .useXpath()
+          .moveToElement("(//div[@class='butter-scroll-handle'])[3]",  300,  500)
+          .mouseButtonDown(0)*/
+
+        //  .pause(5000)
+      //  .click("//a[@data-popcorn-plugin-type='social']")
+        .pause(10000)
+
+        //  .execute('scrollTo(0,3000)')
+      //  .useXpath()
+        //  .waitForElementVisible("//span[contains(text(),'social')]", 3000)
+
+          //add like plugin
+          .click("//span[contains(text(),'social')]")
+
+          .pause(6000)
+          .waitForElementVisible("//div[contains(text(),'Like')]", 5000)
+          .click("//span[@class='icon icon-white icon-plus']")
           .pause(3000)
-          .waitForElementVisible("//div[@id='preview-icon']", 3000)
-          .click("//div[@id='preview-icon']")
-          .pause(10000)
+          .moveToElement("(//div[@class='butter-scroll-handle'])[3]", 0 , 0)
+          .mouseButtonDown(0)
 
-          .window_handles(function(result)
-          {
-                  var temp = result.value[1];
-                  this.switchWindow(temp);
-          })
+          //.execute('scrollTo(0,3000)')
 
-// step 7 - Play preview video
-
-          .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-          .click("//div[@id='previewDialogbody']")
+          //add comment plugin
           .pause(5000)
-          .frame('previewVideo', function () {
-              client
-                  .click("//span[@id='controls-play']")
-                  .pause(4000)
-                  .click("//span[@id='controls-play']")
-          })
+          .waitForElementVisible("//span[contains(text(),'social')]", 3000)
+          .click("//span[contains(text(),'social')]")
+          .waitForElementVisible("//select[@data-manifest-key='type']", 5000)
+          .click("//select[@data-manifest-key='type']")
+          .click("//option[@value='fb-comments']")
+          .pause(8000)
+
+          //add
+
           .end();
 
-          }
-          };
+
+    }
+};

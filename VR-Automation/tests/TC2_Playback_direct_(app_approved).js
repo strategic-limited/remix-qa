@@ -28,7 +28,6 @@ module.exports =
                 this.switchWindow(temp);
       })
 
-
 //Step 3 - Play the video
 
       .useCss()
@@ -44,7 +43,6 @@ module.exports =
               .click("//span[@id='controls-play']")
               .pause(4000)
       })
-      //take sscreenshot
 
       .end();
 

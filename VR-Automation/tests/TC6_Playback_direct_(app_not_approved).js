@@ -65,7 +65,16 @@ module.exports =
         .useXpath()
         .waitForElementPresent("//div[@id='controls-big-play-button']" , 10000)
     		.click("//div[@id='controls-big-play-button']")
-        .pause(25000)
+
+        .frame('previewVideo', function () {
+         client
+        .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+        .click("//span[@id='controls-play']")
+        .pause(4000)
+        .click("//span[@id='controls-play']")
+        .pause(4000)
+        })
+
         .end();
   }
 };

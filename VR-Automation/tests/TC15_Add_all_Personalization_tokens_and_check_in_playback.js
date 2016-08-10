@@ -1,4 +1,6 @@
 var host = 'https://app.videoremix.io/login';
+
+var fieldValue;
 module.exports =
 {
 
@@ -18,26 +20,30 @@ module.exports =
       .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
       .pause(3000)
 
-// Step 2 -  after remix login closing pop up.
+/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
         .useCss()
         .waitForElementVisible('body', 3000)
         .useXpath()
         .waitForElementPresent("//h2" , 3000)
         .click("//button[@title='Close']")
         .useCss()
-        .waitForElementVisible('body', 2000)
+        .waitForElementVisible('body', 2000) */
 
 // Step 4 - Open remix Editor
 
           .url("https://app.videoremix.io/editor/28142/remix")
           .useXpath()
-          .pause(3000)
-          .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 15000)
-          .waitForElementVisible("//button[@type='button']", 10000)
-          .click("//button[@type='button']")
-          .refresh()
           .pause(5000)
-          .waitForElementVisible("//span[@id='identity']", 20000)
+        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
+          .waitForElementVisible("//button[@type='button']", 2000)
+          .click("//button[@type='button']") */                 // this has been removed from editor
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
+          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
+          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
+          .pause(3000)
+          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
+          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
 // Step 5 - Add all tokens
 
@@ -135,7 +141,7 @@ module.exports =
           .click("//span[contains(text(),'Save')]")
           .pause(3000)
 
-// Click on Email Campaign and Verify
+// Step -6 Click on Email Campaign and Verify
 
           .waitForElementVisible("//a[@id='embedBtn']", 5000)
           .click("//a[@id='embedBtn']")
@@ -154,26 +160,17 @@ module.exports =
           .waitForElementVisible("//label[@title='Custom / All Other Email Providers']", 6000)
           .click("//label[@title='Custom / All Other Email Providers']")
           .waitForElementVisible("//input[@id='resultUrl']", 6000)
-          .pause(10000)
+          .getValue("//input[@id='resultUrl']", function(result)
+            {
+              fieldValue = result.value;
+              console.log(fieldValue);
+              client.url(fieldValue);
 
-    /*      .getText("//input[@id='resultUrl']", function(urlValue)
-          {
-              var temp = urlValue.value[];
-              this.switchWindow(temp);
+            })
 
-          })*/
+// Step -7 - Check in Playback
 
-  //        var urlvalue = client.getText("//input[@id='resultUrl']")
-
-    //      .pause(6000)
-          .execute(function(newWindow)
-    {
-              window.open("", null, "height=1024,width=1524");
-    }, [host])
-
-
-// Playback
-          .waitForElementVisible("//div[@id='controls-big-play-button']", 10000)
+          .waitForElementVisible("//div[@id='controls-big-play-button']", 20000)
           .click("//div[@id='controls-big-play-button']")
           .end();
         }

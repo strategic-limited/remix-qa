@@ -10,7 +10,7 @@ module.exports =
         .url(host)
 			  .waitForElementPresent("body" , 3000)
 			  .useXpath()
-        .setValue("//input[@id='email']","dbmjxac_fergiewitz_1468246589@tfbnw.net")
+        .setValue("//input[@id='email']","test15july@gmail.com")
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
@@ -29,15 +29,33 @@ module.exports =
         })
 
         .useXpath()
-        .pause(10000)
-        .waitForElementVisible("//button[@id='useFbButton']", 6000)
-        .click("//button[@id='useFbButton']")
-        .waitForElementVisible("//button[@name='__CONFIRM__']", 6000)
+        .pause(3000)
+        .waitForElementVisible("//div[@id='js_n']", 5000)
+        .click("(//div[@class='_6l- __c_'])[1]")
+        .pause(5000)
+        .window_handles(function(result)
+        {
+            var temp = result.value[2];
+            this.switchWindow(temp);
+        })
+        .useCss()
+        .waitForElementVisible('body', 3000)
+        .useXpath()
+        .waitForElementVisible("//button[@name='__CONFIRM__']", 8000)
         .click("//button[@name='__CONFIRM__']")
-        .waitForElementVisible("//div[@id='controls-big-play-button']", 6000)
-        .click("//div[@id='controls-big-play-button']")
+        .pause(20000)
+        .execute('scrollTo(0,3000)')
 
-        //screenshot
+        .frame(0, function() {
+         client
+        .click("//span[@id='controls-play']")
+        .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+        .click("//span[@id='controls-play']")
+        .pause(4000)
+        .click("//span[@id='controls-play']")
+        .pause(4000)
+        })
+
         .end();
       }
   };

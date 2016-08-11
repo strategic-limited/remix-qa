@@ -14,7 +14,7 @@ module.exports =
       .setValue("//input[@id='pass']","Abcdefgh@123")
 			.waitForElementPresent("//input[@type='submit']" , 3000)
       .click("//input[@type='submit']")
-      .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+      //.waitForElementPresent("//div[@id='u_0_2']" , 6000)
 
 // Step 2 - open video remix in new window and Login.
             .execute(function(newWindow)
@@ -65,17 +65,19 @@ module.exports =
     .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
 
 
-// Step 4 - remix editor - save video
-    .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-    .click("//button[contains(text(),'Save')]")
-    .setValue("//input[@class='input title-input']",new Date())
-    .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-    .click("//span[contains(text(),'Save')]")
-    .pause(3000)
-
-    .waitForElementVisible("//div[@id='preview-icon']", 3000)
-    .click("//div[@id='preview-icon']")
-    .pause(10000)
+//    Step 4 - remix editor - save video
+      .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
+      .click("//button[contains(text(),'Save')]")
+      .setValue("//input[@class='input title-input']",new Date())
+      .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
+      .click("//span[contains(text(),'Save')]")   //delete below one after test pasess
+      .pause(2000)
+      .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
+      .click("//button[contains(text(),'Save')]")
+      .pause(5000)
+      .waitForElementVisible("//div[@id='preview-icon']", 3000)
+      .click("//div[@id='preview-icon']")
+      .pause(10000)
 
 // Step 5  - Click on 'Connect with Facebook' button
 
@@ -132,9 +134,8 @@ module.exports =
     .click("//div[@id='u_1_0']")
     .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
     .click("//a[contains(text(),'Remove App')]")
-    .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
+    .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
     .click("//input[@name='ok']")
-    .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]", 3000)
     .pause(6000)
     .end();
 

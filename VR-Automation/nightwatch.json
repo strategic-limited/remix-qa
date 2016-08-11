@@ -10,8 +10,8 @@
     "start_process" : false,
     "server_path" : "",
     "log_path" : "",
-    "host" : "127.0.0.1",
-    "port" : 4444,
+    "host" : "hub.browserstack.com",
+    "port" : 80,
     "cli_args" : {
       "webdriver.chrome.driver" : "",
       "webdriver.ie.driver" : ""
@@ -21,8 +21,8 @@
   "test_settings" : {
     "default" : {
       "launch_url" : "http://localhost/",
-      "selenium_port"  : 4444,
-      "selenium_host"  : "127.0.0.1",
+      "selenium_port"  : 80,
+      "selenium_host"  : "hub.browserstack.com",
       "silent": true,
       "screenshots" : {
         "enabled" : true,

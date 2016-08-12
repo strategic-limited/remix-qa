@@ -21,9 +21,9 @@ module.exports =
 
       .waitForElementVisible("//button[@id='withoutFbButton']", 5000)
       .click("//button[@id='withoutFbButton']")
-      .pause(5000)
+      .pause(10000)
       .click("//span[@id='controls-play']")
-      .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+      .waitForElementVisible("//span[contains(text(),'0:09')]", 20000)
       .click("//span[@id='controls-play']")
       .pause(4000)
       .click("//span[@id='controls-play']")

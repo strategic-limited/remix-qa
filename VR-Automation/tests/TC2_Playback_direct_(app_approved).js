@@ -30,14 +30,11 @@ module.exports =
 
 //Step 3 - Play the video
 
-      .useCss()
-			.waitForElementVisible('body', 3000)
-			.useXpath()
-      .waitForElementPresent("//div[@id='controls-big-play-button']" , 5000)
-			.click("//div[@id='controls-big-play-button']")
       .frame('previewVideo', function () {
           client
-              .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+              .waitForElementVisible("//span[@id='controls-play']", 9000)
+              .click("//span[@id='controls-play']")
+              .waitForElementVisible("//span[contains(text(),'0:09')]", 50000)
               .click("//span[@id='controls-play']")
               .pause(4000)
               .click("//span[@id='controls-play']")

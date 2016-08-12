@@ -29,8 +29,8 @@ module.exports =
         })
 
         .useXpath()
-        .pause(3000)
-        .waitForElementVisible("//div[@id='js_n']", 5000)
+        .pause(5000)
+        .waitForElementVisible("//div[@id='js_n']", 10000)
         .click("(//div[@class='_6l- __c_'])[1]")
         .pause(5000)
         .window_handles(function(result)
@@ -48,14 +48,28 @@ module.exports =
 
         .frame(0, function() {
          client
+        .waitForElementVisible("//span[@id='controls-play']", 3000)
         .click("//span[@id='controls-play']")
-        .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
+        .waitForElementVisible("//span[contains(text(),'0:09')]", 20000)
         .click("//span[@id='controls-play']")
         .pause(4000)
         .click("//span[@id='controls-play']")
         .pause(4000)
         })
 
+// step 3 - navigate to facebook and cancel the VR App
+
+        .url("https://www.facebook.com/settings?tab=applications")
+        .pause(10000)
+        .waitForElementVisible("//div[@id='u_1_0']", 5000)
+        .pause(7000)
+        .click("//div[@id='u_1_0']")
+        .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
+        .click("//a[contains(text(),'Remove App')]")
+        .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
+        .click("//input[@name='ok']")
+        .pause(6000)
         .end();
+
       }
   };

@@ -33,11 +33,11 @@ module.exports =
 
         .url("https://app.videoremix.io/editor/28082/remix")
         .useXpath()
-        .pause(5000)
+        .pause(10000)
       /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
         .waitForElementVisible("//button[@type='button']", 2000)
         .click("//button[@type='button']") */                 // this has been removed from editor
-        .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+        .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 15000)
         .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
         .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
         .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -61,20 +61,31 @@ module.exports =
         .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
         .click("//button[contains(text(),'Save')]")
         .setValue("//input[@class='input title-input']",new Date())
+
+
         .click("//li[@data-source='https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif']")
+
+        .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
         .click("//span[contains(text(),'Save')]")
-        .pause(3000)
+        .pause(5000) //delete the three lines after the issue get fixed
+        .waitForElementVisible("//button[contains(text(),'Save')]", 10000)
+        .click("//button[contains(text(),'Save')]")
+        .pause(5000)
+        .waitForElementVisible("//div[@id='preview-icon']", 3000)
         .click("//div[@id='preview-icon']")
+        .pause(10000)
+
 
 // step 6 - Play preview video
 
-        .pause(5000)
+
         .frame('previewVideo', function () {
             client
+                .waitForElementVisible("//span[@id='controls-play']", 10000)
                 .click("//span[@id='controls-play']")
-                .pause(4000)
+                .pause(5000)
                 .click("//span[@id='controls-play']")
-                .pause(4000)
+                .pause(5000)
         })
         .end();
 

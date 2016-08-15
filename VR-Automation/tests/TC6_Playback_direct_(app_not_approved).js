@@ -15,7 +15,7 @@ module.exports =
         .setValue("//input[@id='pass']","Abcdefgh@123")
         .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
-        .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+      //  .waitForElementPresent("//div[@id='u_0_2']" , 4000)
 
 
 // Step 2 - Open playback link https://cdn.videoremix.io/282/vr/kwu
@@ -51,7 +51,7 @@ module.exports =
         .useCss()
         .waitForElementVisible('body', 3000)
         .useXpath()
-        .waitForElementPresent("//button[@name='__CANCEL__']", 5000)
+        .waitForElementPresent("//button[@name='__CANCEL__']", 8000)
         .click("//button[@name='__CANCEL__']")
         .pause(10000)
 
@@ -62,9 +62,8 @@ module.exports =
               var temp = result.value[1];
               this.switchWindow(temp);
         })
-        .useXpath()
-        .waitForElementPresent("//div[@id='controls-big-play-button']" , 10000)
-    		.click("//div[@id='controls-big-play-button']")
+        .waitForElementVisible("//span[@id='controls-play']", 9000)
+        .click("//span[@id='controls-play']")
 
         .frame('previewVideo', function () {
          client

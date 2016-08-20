@@ -16,13 +16,13 @@ module.exports =
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
-        .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+        //.waitForElementPresent("//div[@id='u_0_2']" , 4000)
 
 // Step 2 - open video remix in new window and Login.
 
         .execute(function(newWindow)
       			{
-                      window.open('https://app.videoremix.io/login', null, "height=1024,width=1524");
+                      window.open('https://app.videoremix.io/login', null, "height=1600,width=1500");
             }, [host])
 
         .window_handles(function(result)
@@ -60,7 +60,7 @@ module.exports =
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -71,15 +71,15 @@ module.exports =
 
 // Step 5 - remix editor - save video
 
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
+          .waitForElementVisible("//button[contains(text(),'Save')]", 3000)
           .click("//button[contains(text(),'Save')]")
           .setValue("//input[@class='input title-input']",new Date())
-          .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
+          .waitForElementVisible("//span[contains(text(),'Save')]", 5000)
           .click("//span[contains(text(),'Save')]")   //delete below one after test pasess
-          .pause(2000)
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
+          .pause(5000)
+          .waitForElementVisible("//button[contains(text(),'Save')]", 5000)
           .click("//button[contains(text(),'Save')]")
-          .pause(2000)
+          .pause(5000)
           .waitForElementVisible("//a[contains(text(),'Produce & Share')]", 4000)
           .click("//a[contains(text(),'Produce & Share')]")
 
@@ -138,7 +138,7 @@ module.exports =
 
 // Step 8 - Social campaign facebook pages - make a selection
 
-              .waitForElementVisible("//select[@id='fbTabs']", 4000)
+              .waitForElementVisible("//select[@id='fbTabs']", 7000)
               .click("//select[@id='fbTabs']")
               .pause(2000)
               .click("//option[@value='newTab']")
@@ -201,11 +201,20 @@ module.exports =
               .useXpath()
               .waitForElementVisible("//button[@name='__CONFIRM__']", 8000)
               .click("//button[@name='__CONFIRM__']")
-              .pause(20000)
+              .pause(30000)
               .execute('scrollTo(0,3000)')
 
-              .frame('widget2', function() {
+              /*.window_handles(function(result)
+              {
+                  var temp = result.value[1];
+                  this.switchWindow(temp);
+              })*/
+
+
+              .frame(2, function() {
                client
+               .pause(5000)
+               .waitForElementVisible("//span[@id='controls-play']", 10000)
               .click("//span[@id='controls-play']")
               .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
               .click("//span[@id='controls-play']")
@@ -218,26 +227,31 @@ module.exports =
 
               .url("https://www.facebook.com/settings?tab=applications")
               .pause(10000)
-              .waitForElementVisible("//div[@id='u_1_0']", 5000)
+              .waitForElementVisible("(//div[@role='button'])[1]", 5000)
               .pause(7000)
-              .click("//div[@id='u_1_0']")
+              .click("(//div[@role='button'])[1]")
               .pause(3000)
               .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
               .click("//a[contains(text(),'Remove App')]")
               .pause(3000)
-              .waitForElementVisible("//span[contains(text(),'Remove videoremix publisher?')]", 5000)
+              .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
               .click("//input[@name='ok']")
               .pause(5000)
+              
+               .window_handles(function(result)
+              {
+                  var temp = result.value[2];
+                  this.switchWindow(temp);
+              })
 
-              .waitForElementVisible("//div[@id='u_1_2']", 5000)
+              .waitForElementVisible("//div[contains(text(), 'VidCloud.io')]", 5000)
               .pause(7000)
-              .click("//div[@id='u_1_2']")
+              .click("//div[contains(text(), 'VidCloud.io')]")
               .pause(3000)
               .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
               .click("//a[contains(text(),'Remove App')]")
-              .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
+              .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
               .click("//input[@name='ok']")
-              .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]", 3000)
               .pause(6000)
 
               .end();

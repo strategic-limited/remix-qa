@@ -16,7 +16,8 @@ module.exports =
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
-        .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+        .pause(3000)
+    //    .waitForElementPresent("//div[@id='u_0_2']" , 4000)
 
 // Step 2 - open video remix in new window and Login.
 
@@ -56,11 +57,11 @@ module.exports =
 
           .url("https://app.videoremix.io/editor/28202/remix")
           .useXpath()
-          .pause(5000)
+          .pause(10000)
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -74,13 +75,20 @@ module.exports =
           .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
           .click("//button[contains(text(),'Save')]")
           .setValue("//input[@class='input title-input']",new Date())
+
           .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
           .click("//span[contains(text(),'Save')]")
+          .pause(5000) //delete the three lines after the issue get fixed
+          .waitForElementVisible("//button[contains(text(),'Save')]", 10000)
+          .click("//button[contains(text(),'Save')]")
+          .pause(10000)
 
 // Step 6 - Go to Social Campaign
 
-          .pause(4000)
-          .waitForElementVisible("//a[@id='embedSocialBtn']", 2000)
+          .waitForElementVisible("//a[contains(text(),'Produce & Share')]", 10000)  //remove the two lines after issue get fixed
+          .click("//a[contains(text(),'Produce & Share')]")
+
+          .waitForElementVisible("//a[@id='embedSocialBtn']", 5000)
           .click("//a[@id='embedSocialBtn']")
           .pause(10000)
 
@@ -133,17 +141,16 @@ module.exports =
 
         .url("https://www.facebook.com/settings?tab=applications")
         .pause(10000)
-        .waitForElementVisible("//div[@id='u_1_0']", 5000)
 
-// Step 10 - Cancel app approval
+// Step 10 - Cancel publisher app approval
 
+          .waitForElementVisible("//div[@role='button']", 5000)
           .pause(7000)
-          .click("//div[@id='u_1_0']")
+          .click("//div[@role='button']")
           .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
           .click("//a[contains(text(),'Remove App')]")
-          .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
+          .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
           .click("//input[@name='ok']")
-          .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]", 3000)
           .pause(6000)
           .end();
 

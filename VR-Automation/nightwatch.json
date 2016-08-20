@@ -29,15 +29,20 @@
         "path" : ""
       },
       "desiredCapabilities": {
+        
         "browserName": "firefox",
-		 "browser_version": "46",
+		 "browser_version": "47",
 		"os": "Windows",
-		"os_version": "8.1",
+		"os_version": "10",
+		"resolution" : "2048x1536",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
 		"browserstack.user" : "digistrats1",
 		"browserstack.key" : "a8foFUhxRgynyTJrtnJt",
-		"browserstack.debug" : true
+		"browserstack.debug" : true,
+		"notifications" : "2"
+		
+		
       }
     },
 
@@ -48,6 +53,7 @@
         "acceptSslCerts": true,
 		"browserstack.user" : "digistrats1",
 		"browserstack.key" : "a8foFUhxRgynyTJrtnJt"
+		
       }
     }
   }

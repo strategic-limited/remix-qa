@@ -12,11 +12,11 @@ module.exports =
         .url(host)
 			  .waitForElementPresent("body" , 3000)
 			  .useXpath()
-        .setValue("//input[@id='email']","hspisqp_thurnescu_1468245450@tfbnw.net")
+        .setValue("//input[@id='email']","test15july.1@gmail.com")
         .setValue("//input[@id='pass']","Abcdefgh@123")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
-        .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+        //.waitForElementPresent("//div[@id='u_0_2']" , 4000)
 
 // Step 2 - open video remix in new window and Login.
 
@@ -60,7 +60,7 @@ module.exports =
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -134,10 +134,10 @@ module.exports =
 
 // Step 8 - Social campaign facebook pages - make a selection
 
-                .waitForElementVisible("//select[@id='fbTabs']", 4000)
+                .waitForElementVisible("//select[@id='fbTabs']", 7000)
                 .click("//select[@id='fbTabs']")
                 .pause(2000)
-                .click("//option[@value='340196389644659/tabs/app_1728968890675795']")
+                .click("(//select[@id='fbTabs']/option)[3]")
                 .keys(['\uE006'])
                 .pause(4000)
                 .click("//a[@id='showPostForm']")
@@ -179,7 +179,7 @@ module.exports =
                             client.assert.equal(fieldValue1, fieldValue2)
                           })
 
-                          / Step - Click on the Post and user get redirect to FB tab
+                          // Step - Click on the Post and user get redirect to FB tab
 
                                         .click("(//div[@class='_6l- __c_'])[1]")
                                         .pause(8000)
@@ -198,8 +198,10 @@ module.exports =
                                         .pause(20000)
                                         .execute('scrollTo(0,3000)')
 
-                                        .frame(0, function() {
+                                        .frame(2, function() {
                                          client
+                                         .pause(5000)
+                                         .waitForElementVisible("//span[@id='controls-play']", 10000)
                                         .click("//span[@id='controls-play']")
                                         .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
                                         .click("//span[@id='controls-play']")
@@ -207,32 +209,36 @@ module.exports =
                                         .click("//span[@id='controls-play']")
                                         .pause(4000)
                                         })
+                        
+              .url("https://www.facebook.com/settings?tab=applications")
+              .pause(10000)
+              .waitForElementVisible("(//div[@role='button'])[1]", 5000)
+              .pause(7000)
+              .click("(//div[@role='button'])[1]")
+              .pause(3000)
+              .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
+              .click("//a[contains(text(),'Remove App')]")
+              .pause(3000)
+              .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
+              .click("//input[@name='ok']")
+              .pause(5000)
+              
+               .window_handles(function(result)
+              {
+                  var temp = result.value[2];
+                  this.switchWindow(temp);
+              })
 
-// step 8 - navigate to facebook and cancel the VR App
+              .waitForElementVisible("//div[contains(text(), 'VidCloud.io')]", 5000)
+              .pause(7000)
+              .click("//div[contains(text(), 'VidCloud.io')]")
+              .pause(3000)
+              .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
+              .click("//a[contains(text(),'Remove App')]")
+              .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
+              .click("//input[@name='ok']")
+              .pause(6000)            
 
-                                        .url("https://www.facebook.com/settings?tab=applications")
-                                        .pause(10000)
-                                        .waitForElementVisible("//div[@id='u_1_0']", 5000)
-                                        .pause(7000)
-                                        .click("//div[@id='u_1_0']")
-                                        .pause(3000)
-                                        .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-                                        .click("//a[contains(text(),'Remove App')]")
-                                        .pause(3000)
-                                        .waitForElementVisible("//span[contains(text(),'Remove videoremix publisher?')]", 5000)
-                                        .click("//input[@name='ok']")
-                                        .pause(5000)
-
-                                        .waitForElementVisible("//div[@id='u_1_2']", 5000)
-                                        .pause(7000)
-                                        .click("//div[@id='u_1_2']")
-                                        .pause(3000)
-                                        .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-                                        .click("//a[contains(text(),'Remove App')]")
-                                        .waitForElementVisible("//span[contains(text(),'Remove videoremix.io?')]", 5000)
-                                        .click("//input[@name='ok']")
-                                        .waitForElementNotVisible("//div[contains(text(),'videoremix.io')]", 3000)
-                                        .pause(6000)
 
                                         .end();
 

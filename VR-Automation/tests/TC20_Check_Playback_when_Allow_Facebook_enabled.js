@@ -35,7 +35,7 @@ module.exports =
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -50,10 +50,6 @@ module.exports =
           .setValue("//input[@class='input title-input']",new Date())
           .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
           .click("//span[contains(text(),'Save')]")
-          .pause(3000)
-
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000) //delete these three lines after test passes
-          .click("//button[contains(text(),'Save')]")
           .pause(3000)
 
           .waitForElementVisible("//div[@id='preview-icon']", 3000)

@@ -35,7 +35,7 @@ module.exports =
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -78,11 +78,11 @@ module.exports =
 
 // step 7 - Play preview video
 
-          .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-          .click("//div[@id='previewDialogbody']")
+   
           .pause(5000)
           .frame('previewVideo', function () {
               client
+                  .waitForElementVisible("//span[@id='controls-play']", 5000)
                   .click("//span[@id='controls-play']")
                   .pause(4000)
                   .click("//span[@id='controls-play']")

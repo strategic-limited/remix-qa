@@ -37,7 +37,7 @@ module.exports =
         /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
           .waitForElementVisible("//button[@type='button']", 2000)
           .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
+          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
           .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
           .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
           .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
@@ -169,7 +169,7 @@ module.exports =
             })
 
 // Step -7 - Check in Playback
-
+            .pause(3000)
           .waitForElementVisible("//div[@id='controls-big-play-button']", 20000)
           .click("//div[@id='controls-big-play-button']")
           .end();

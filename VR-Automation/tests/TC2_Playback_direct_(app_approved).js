@@ -14,34 +14,27 @@ module.exports =
         .setValue("//input[@id='pass']","JPsRq5vMuzn")
 			  .waitForElementPresent("//input[@type='submit']" , 3000)
         .click("//input[@type='submit']")
-        .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+      //  .waitForElementPresent("//div[@id='u_0_2']" , 4000)
 
 //Step 2 - Go to https://cdn.videoremix.io/282/vr/kwu playback
         .execute(function(newWindow)
 			  {
-                window.open('https://cdn.videoremix.io/282/vr/kwu', null, "height=1024,width=768");
+                window.open('https://cdn.videoremix.io/282/vr/kwu', null, "height=1024,width=1024");
         }, [host])
 
         .window_handles(function(result)
 			{
                 var temp = result.value[1];
                 this.switchWindow(temp);
+                client.windowMaximize()
       })
 
 //Step 3 - Play the video
 
-      .frame('previewVideo', function () {
-          client
-              .waitForElementVisible("//span[@id='controls-play']", 9000)
-              .click("//span[@id='controls-play']")
-              .waitForElementVisible("//span[contains(text(),'0:09')]", 50000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-      })
-
-      .end();
-
-      }
+.pause(5000)
+.waitForElementVisible("//div[@id='controls-big-play-button']", 20000)
+.click("//div[@id='controls-big-play-button']")
+.pause(5000)
+.end();
+}
 };

@@ -1,8 +1,0 @@
-How to Use Nightwatch framework - 
-
-http://tanmaysarkar.com/nightwatch-setup-in-windows/
-
-1) Install node JS
-2) Design test cases under test directory
-3) all cases will create in the form js file.
-4)  run the cases with current directory - > node nightwatch.js -t tests/sample.js

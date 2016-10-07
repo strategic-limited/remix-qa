@@ -1,0 +1,10 @@
+{
+  "name": "remix-qa",
+  "version": "0.0.1",
+  "dependencies": {
+    "nightwatch": "^0.9.8"
+  },
+  "scripts": {
+    "start": "nightwatch tests/*"
+  }
+}

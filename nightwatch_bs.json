@@ -1,53 +1,52 @@
 {
-  "src_folders" : ["tests"],
-  "output_folder" : "reports",
-  "custom_commands_path" : "",
-  "custom_assertions_path" : "",
-  "page_objects_path" : "",
-  "globals_path" : "",
-
- "selenium" : {
-    "start_process" : false,
-    "server_path" : "",
-    "log_path" : "",
-    "host" : "hub.browserstack.com",
-    "port" : 80,
-    "cli_args" : {
-      "webdriver.chrome.driver" : "",
-      "webdriver.ie.driver" : ""
+  "src_folders": [
+    "tests"
+  ],
+  "output_folder": "reports",
+  "custom_commands_path": "",
+  "custom_assertions_path": "",
+  "page_objects_path": "pages",
+  "globals_path": "",
+  "selenium": {
+    "start_process": false,
+    "server_path": "",
+    "log_path": "",
+    "host": "hub.browserstack.com",
+    "port": 80,
+    "cli_args": {
+      "webdriver.chrome.driver": "",
+      "webdriver.ie.driver": ""
     }
   },
-
-  "test_settings" : {
-    "default" : {
-      "launch_url" : "http://hub.browserstack.com",
-      "selenium_port"  : 80,
-      "selenium_host"  : "hub.browserstack.com",
+  "test_settings": {
+    "default": {
+      "launch_url": "http://hub.browserstack.com",
+      "selenium_port": 80,
+      "selenium_host": "hub.browserstack.com",
       "silent": true,
-      "screenshots" : {
-        "enabled" : true,
-        "path" : ""
+      "screenshots": {
+        "enabled": true,
+        "path": ""
       },
       "desiredCapabilities": {
         "browserName": "firefox",
-		 "browser_version": "46",
-		"os": "Windows",
-		"os_version": "8.1",
+        "browser_version": "46",
+        "os": "Windows",
+        "os_version": "8.1",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-		"browserstack.user" : "digistrats1",
-		"browserstack.key" : "a8foFUhxRgynyTJrtnJt",
-		"browserstack.debug" : true
+        "browserstack.user": "digistrats1",
+        "browserstack.key": "a8foFUhxRgynyTJrtnJt",
+        "browserstack.debug": true
       }
     },
-
-    "chrome" : {
+    "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true,
-		"browserstack.user" : "digistrats1",
-		"browserstack.key" : "a8foFUhxRgynyTJrtnJt"
+        "browserstack.user": "digistrats1",
+        "browserstack.key": "a8foFUhxRgynyTJrtnJt"
       }
     }
   }

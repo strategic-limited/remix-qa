@@ -6,7 +6,7 @@
   "custom_commands_path": "",
   "custom_assertions_path": "",
   "page_objects_path": "pages",
-  "globals_path": "",
+  "globals_path": "globals",
   "selenium": {
     "start_process": false,
     "server_path": "",
@@ -20,6 +20,7 @@
   },
   "test_settings": {
     "default": {
+      "filter": "TC*",
       "launch_url": "http://localhost/",
       "selenium_port": 80,
       "selenium_host": "hub.browserstack.com",

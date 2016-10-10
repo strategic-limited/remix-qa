@@ -1,143 +1,79 @@
-var host = 'https://www.facebook.com/';
-module.exports =
-{
+'use strict';
 
-    'Remixed video can be played back': function(client)
-     {
-// Step 1 - open facebook and login.
-      client
-		  .windowMaximize()
-      .url(host)
-			.waitForElementPresent("body" , 3000)
-			.useXpath()
-      .setValue("//input[@id='email']","houdelh_panditwitz_1468246588@tfbnw.net")
-      .setValue("//input[@id='pass']","Abcdefgh@123")
-			.waitForElementPresent("//input[@type='submit']" , 3000)
-      .click("//input[@type='submit']")
-      //.waitForElementPresent("//div[@id='u_0_2']" , 6000)
+const specHelper = require('../lib/spec-helper');
 
-// Step 2 - open video remix in new window and Login.
-            .execute(function(newWindow)
-			{
-                window.open('https://app.videoremix.io/login', null, "height=1024,width=1524");
-      }, [host])
-            .window_handles(function(result)
-			{
-                var temp = result.value[1];
-                this.switchWindow(temp);
-            })
-			.useCss()
-      .pause(3000)
-			.waitForElementVisible('body', 3000)
-			.useXpath()
-      .waitForElementPresent("//input[@name='uid']" , 2000)
-      .setValue("//input[@name='uid']","test03@gmail.com")
-      .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-			.click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-      .pause(3000)
+module.exports = {
 
-/* // Step 3 -  after remix login closing pop up. (This functionality has been removed)
-              .useCss()
-              .waitForElementVisible('body', 3000)
-              .useXpath()
-              .waitForElementPresent("//h2" , 3000)
-              .click("//button[@title='Close']")
-              .useCss()
-              .waitForElementVisible('body', 2000) */
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - open facebook and login.
+    specHelper.loginToFb(client, true);
+    // Step 2 - open video remix in new window and Login.
+    specHelper.loginToVr(client);
+  },
 
-// Step 3 - After remix login verifying Templates pages
-      .waitForElementVisible("//a[@data-section='templates']", 5000)
+  'Remixed video can be played back'(client) {
+    let windowHandle;
 
-// Step 4 - Open remix Editor
+    client.windowHandle((result) => {
+      windowHandle = result.value;
+    });
+    const projectsPage = client.page.projects();
+    projectsPage.expect.element('@templatesSection').to.be.visible.before(5000);
 
-    .url("https://app.videoremix.io/editor/27102/remix")
-    .useXpath()
-    .pause(5000)
-  /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-    .waitForElementVisible("//button[@type='button']", 2000)
-    .click("//button[@type='button']") */                 // this has been removed from editor
-    .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
-    .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-    .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-    .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-    .pause(3000)
-    .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-    .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+    // Step 4 - Open remix Editor
+    const editorPage = client.page.editor();
+    editorPage.navigate('https://app.videoremix.io/editor/27102/remix');
+    editorPage.expect.element('@welcomeStep1').to.be.visible.before(30000);
+    editorPage.expect.element('@mediaInput').to.be.visible.before(100);
+    editorPage.setValue('@mediaInput', 'youtube');
+    editorPage.clearValue('@mediaInput');
+    editorPage.expect.element('@welcomeStep2').to.be.visible.before(5000);
+    editorPage.click('@welcomeStep2');
+    //    Step 4 - remix editor - save video
+    editorPage.expect.element('@saveButton').to.be.visible.before(2000);
+    editorPage.click('@saveButton');
 
+    editorPage.setValue('@savePopupTitleInput', new Date());
+    editorPage.click('@savePopupSaveButton');
 
-//    Step 4 - remix editor - save video
-      .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-      .click("//button[contains(text(),'Save')]")
-      .setValue("//input[@class='input title-input']",new Date())
-      .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-      .click("//span[contains(text(),'Save')]")   //delete below one after test pasess
-      .pause(2000)
-      .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-      .click("//button[contains(text(),'Save')]")
-      .pause(5000)
-      .waitForElementVisible("//div[@id='preview-icon']", 3000)
-      .click("//div[@id='preview-icon']")
-      .pause(10000)
+    editorPage.expect.element('@previewButton').to.be.visible.before(2000);
+    editorPage.click('@previewButton');
 
-// Step 5  - Click on 'Connect with Facebook' button
+    editorPage.expect.element('@previewBody').to.be.visible.before(10000);
 
-.waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-.frame('previewVideo', function () {
-    client
-        .waitForElementVisible("//div/button[@id='useFbButton']", 9000)
-        .click("//div/button[@id='useFbButton']")
-        .pause(7000)
-})
+    // Step 5  - Click on 'Connect with Facebook' button
+    client.frame('previewVideo');
+    const playbackPage = client.page.playback();
+    playbackPage.expect.element('@useFbButton').to.be.visible.before(5000);
+    playbackPage.click('@useFbButton');
 
-//Step 6 - facebook App Approval
+    client.pause(1000);
 
-    .window_handles(function(result)
-    {
+    //Step 6 - facebook App Approval
+    specHelper.switchToLastWindow(client);
 
-        var temp = result.value[2];
-        this.switchWindow(temp);
+    const facebookPopupPage = client.page.facebookPopup();
+    facebookPopupPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPopupPage.click('@confirmButton');
 
-    })
+    specHelper.switchWindowByIdx(client, 0);
 
-    .useCss()
-    .waitForElementVisible('body', 3000)
-    .useXpath()
-    .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
-    .click("//button[@name='__CONFIRM__']")
-    .pause(10000)
-    .window_handles(function(result)
-    {
-        var temp = result.value[1];
-        this.switchWindow(temp);
+    // step 7 - Play preview video
+    editorPage.click('@previewBody');
+    client.frame('previewVideo');
+    playbackPage.expect.element('@playButton').to.be.visible.before(5000);
+    playbackPage.click('@playButton');
+    client.pause(4000);
+    playbackPage.click('@playButton');
+    client.pause(4000);
 
-    })
+    // step 8 - navigate to facebook
+    specHelper.cancelAppInFb(client);
+  },
 
-// step 7 - Play preview video
+  after(client) {
+    client.end();
+  }
 
-    .waitForElementVisible("//div[@id='previewDialogbody']", 5000)
-    .click("//div[@id='previewDialogbody']")
-    .frame('previewVideo', function () {
-        client
-            .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
-            .click("//span[@id='controls-play']")
-            .pause(4000)
-            .click("//span[@id='controls-play']")
-            .pause(4000)
-    })
-
-// step 8 - navigate to facebook and cancel the VR App
-
-    .url("https://www.facebook.com/settings?tab=applications")
-    .pause(10000)
-    .waitForElementVisible("//div[@id='u_1_0']", 5000)
-    .pause(7000)
-    .click("//div[@id='u_1_0']")
-    .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-    .click("//a[contains(text(),'Remove App')]")
-    .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
-    .click("//input[@name='ok']")
-    .pause(6000)
-    .end();
-
-    }
 };

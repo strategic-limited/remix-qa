@@ -5,6 +5,6 @@
     "nightwatch": "^0.9.8"
   },
   "scripts": {
-    "start": "nightwatch tests/*"
+    "start": "nightwatch"
   }
 }

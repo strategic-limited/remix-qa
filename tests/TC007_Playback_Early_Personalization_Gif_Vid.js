@@ -1,94 +1,61 @@
-var host = 'https://app.videoremix.io/login';
-module.exports =
-{
+'use strict';
 
-  'Playback Early Personalization Gif Vid': function(client)
-   {
-// Step 1 - Login to VR editor
-        client
-        .windowMaximize()
-        .url(host)
-        .useCss()
-        .waitForElementVisible('body', 3000)
-        .useXpath()
-        .waitForElementPresent("//input[@name='uid']" , 2000)
-        .setValue("//input[@name='uid']","test03@gmail.com")
-        .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-        .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-        .pause(3000)
+const specHelper = require('../lib/spec-helper');
+const config = require('../config/config');
 
-/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
-                .useCss()
-                .waitForElementVisible('body', 3000)
-                .useXpath()
-                .waitForElementPresent("//h2" , 3000)
-                .click("//button[@title='Close']")
-                .useCss()
-                .waitForElementVisible('body', 2000) */
+const imageUrl = 'https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif';
 
-// Step 2 - After remix login verifying Templates pages
-        .waitForElementVisible("//a[@data-section='templates']", 3000)
+module.exports = {
 
-// Step 3 - Open remix Editor
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - Login to VR editor
+    // Step 2 - After remix login verifying Templates pages
+    specHelper.loginToVr(client);
+  },
 
-        .url("https://app.videoremix.io/editor/28082/remix")
-        .useXpath()
-        .pause(10000)
-      /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-        .waitForElementVisible("//button[@type='button']", 2000)
-        .click("//button[@type='button']") */                 // this has been removed from editor
-        .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 15000)
-        .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-        .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-        .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-        .pause(3000)
-        .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-        .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+  'Playback Early Personalization Gif Vid'(client) {
+    // Step 3 - Open remix Editor
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/27102/remix');
 
+    //Step 4 - Add media in the textbox
+    editorPage.setValue('@mediaInput', imageUrl);
+    editorPage.expect.element('@getMediaButton').to.be.visible.before(3000);
+    editorPage.click('@getMediaButton');
 
-//Step 4 - Add media in the textbox
+    editorPage.expect.element('@imageInMyMedia').to.be.visible.before(3000);
+    editorPage.click('@imageInMyMedia');
 
-        .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif")
-        .waitForElementVisible("//a[@id='get-media-btn']", 3000)
-        .click("//a[@id='get-media-btn']")
-        .waitForElementVisible("//div[@data-popcorn-plugin-type='image']", 3000)
-        .click("//div[@data-popcorn-plugin-type='image']")
-        .waitForElementVisible("(//div[@class='title'])[1]", 3000)
-        .click("//span[@class='icon icon-white icon-only icon-play']")
+    //Step 5 - Save the video
+    editorPage.expect.element('@saveButton').to.be.visible.before(2000);
+    editorPage.click('@saveButton');
 
-//Step 5 - Save the video
-        .pause(3000)
-        .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-        .click("//button[contains(text(),'Save')]")
-        .setValue("//input[@class='input title-input']",new Date())
+    editorPage.setValue('@savePopupTitleInput', new Date());
+    editorPage.selectThumbnailInSavePopup(imageUrl);
+    editorPage.click('@savePopupSaveButton');
 
+    // step 6 - Play preview video
+    editorPage.expect.element('@previewButton').to.be.visible.before(2000);
+    editorPage.click('@previewButton');
 
-        .click("//li[@data-source='https://media.giphy.com/media/3o7ZeMCXAFPvusagQU/giphy.gif']")
+    editorPage.expect.element('@previewBody').to.be.visible.before(10000);
 
-        .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-        .click("//span[contains(text(),'Save')]")
-        .pause(5000) //delete the three lines after the issue get fixed
-        .waitForElementVisible("//button[contains(text(),'Save')]", 10000)
-        .click("//button[contains(text(),'Save')]")
-        .pause(5000)
-        .waitForElementVisible("//div[@id='preview-icon']", 3000)
-        .click("//div[@id='preview-icon']")
-        .pause(10000)
+    client.frame('previewVideo');
+    const playbackPage = client.page.playback();
 
+    playbackPage.expect.element('@withoutFbButton').to.be.visible.before(3000);
+    playbackPage.click('@withoutFbButton');
 
-// step 6 - Play preview video
+    playbackPage.expect.element('@playButton').to.be.visible.before(5000);
+    playbackPage.click('@playButton');
 
+    client.pause(5000);
 
-        .frame('previewVideo', function () {
-            client
-                .waitForElementVisible("//span[@id='controls-play']", 10000)
-                .click("//span[@id='controls-play']")
-                .pause(5000)
-                .click("//span[@id='controls-play']")
-                .pause(5000)
-        })
-        .end();
+    playbackPage.click('@playButton');
+  },
 
+  after(client) {
+    client.end();
   }
 
 };

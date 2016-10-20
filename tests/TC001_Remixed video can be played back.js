@@ -13,23 +13,9 @@ module.exports = {
   },
 
   'Remixed video can be played back'(client) {
-    let windowHandle;
-
-    client.windowHandle((result) => {
-      windowHandle = result.value;
-    });
-    const projectsPage = client.page.projects();
-    projectsPage.expect.element('@templatesSection').to.be.visible.before(5000);
-
     // Step 4 - Open remix Editor
-    const editorPage = client.page.editor();
-    editorPage.navigate('https://app.videoremix.io/editor/27102/remix');
-    editorPage.expect.element('@welcomeStep1').to.be.visible.before(30000);
-    editorPage.expect.element('@mediaInput').to.be.visible.before(100);
-    editorPage.setValue('@mediaInput', 'youtube');
-    editorPage.clearValue('@mediaInput');
-    editorPage.expect.element('@welcomeStep2').to.be.visible.before(5000);
-    editorPage.click('@welcomeStep2');
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/27102/remix');
+
     //    Step 4 - remix editor - save video
     editorPage.expect.element('@saveButton').to.be.visible.before(2000);
     editorPage.click('@saveButton');

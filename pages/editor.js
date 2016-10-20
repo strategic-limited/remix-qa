@@ -16,6 +16,7 @@ module.exports = {
       locateStrategy: 'xpath'
     },
     mediaInput: 'textarea.add-media-input',
+    imageInMyMedia: '[data-popcorn-plugin-type=image]',
     saveButton: {
       selector: '//button[contains(text(),"Save")]',
       locateStrategy: 'xpath'
@@ -32,9 +33,18 @@ module.exports = {
       selector: '//input[@class="input title-input"]',
       locateStrategy: 'xpath'
     },
+    getMediaButton: '#get-media-btn',
     savePopupSaveButton: {
       selector: '//span[contains(text(),"Save")]',
       locateStrategy: 'xpath'
     }
-  }
+  },
+
+  commands: [{
+    selectThumbnailInSavePopup: function(dataSource) {
+      const selector = `li[data-source="${dataSource}"]`;
+      this.expect.element(selector).to.be.visible.before(2000);
+      return this.click(selector);
+    }
+  }]
 };

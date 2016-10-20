@@ -12,5 +12,9 @@ module.exports = {
     login: 'yvglrcw_wongwitz_1468002772@tfbnw.net',
     password: 'JPsRq5vMuzn'
   },
+  anotherFacebookAccount: {
+    login: 'test15july@gmail.com',
+    password: 'Abcdefgh@123'
+  },
   facebookAppName: 'VidCloud.io'
 };

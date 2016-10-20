@@ -66,7 +66,6 @@ module.exports = {
     playbackPage.click('@playButton');
     client.pause(4000);
     playbackPage.click('@playButton');
-    client.pause(4000);
 
     // step 8 - navigate to facebook
     specHelper.cancelAppInFb(client);

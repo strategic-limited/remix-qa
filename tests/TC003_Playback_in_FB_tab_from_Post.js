@@ -30,7 +30,6 @@ module.exports = {
     playbackPage.click('@playButton');
     client.pause(4000);
     playbackPage.click('@playButton');
-    client.pause(4000);
 
 // step 3 - navigate to facebook and cancel the VR App
     specHelper.cancelAppInFb(client);

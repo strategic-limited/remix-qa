@@ -11,6 +11,10 @@ module.exports = {
       selector: '//div/button[@id="useFbButton"]',
       locateStrategy: 'xpath'
     },
+    withoutFbButton: {
+      selector: '//div/button[@id="withoutFbButton"]',
+      locateStrategy: 'xpath'
+    },
     playButton: {
       selector: '//span[@id="controls-play"]',
       locateStrategy: 'xpath'

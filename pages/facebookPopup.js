@@ -8,6 +8,10 @@ module.exports = {
     confirmButton: {
       selector: '//button[@name="__CONFIRM__"]',
       locateStrategy: 'xpath'
+    },
+    cancelButton: {
+      selector: '//button[@name="__CANCEL__"]',
+      locateStrategy: 'xpath'
     }
   }
 };

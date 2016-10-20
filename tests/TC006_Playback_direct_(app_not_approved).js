@@ -1,79 +1,42 @@
-var host = 'https://www.facebook.com/';
-module.exports =
-{
+'use strict';
 
-    'Playback direct (app not approved)': function(client)
-     {
-// Step 1 - open facebook and login.
+const config = require('../config/config');
+const specHelper = require('../lib/spec-helper');
 
-        client
-		    .windowMaximize()
-        .url(host)
-			  .waitForElementPresent("body" , 3000)
-			  .useXpath()
-        .setValue("//input[@id='email']","labczzw_warmanwitz_1468246590@tfbnw.net")
-        .setValue("//input[@id='pass']","Abcdefgh@123")
-        .waitForElementPresent("//input[@type='submit']" , 3000)
-        .click("//input[@type='submit']")
-      //  .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+module.exports = {
 
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - open facebook and login.
+    specHelper.loginToFb(client, config.otherFacebookAccount);
+  },
 
-// Step 2 - Open playback link https://cdn.videoremix.io/282/vr/kwu
+  'Playback direct (app not approved)'(client) {
+    // Step 2 - Open playback link https://cdn.videoremix.io/282/vr/kwu
+    const playbackPage = specHelper.openPlaybackPage(client, 'https://cdn.videoremix.io/282/vr/kwu');
 
-        .execute(function(newWindow)
-        {
-          window.open("https://cdn.videoremix.io/282/vr/kwu", null, "height=1024,width=1524")
-        }, [host])
-        .pause(5000)
-        .window_handles(function(result)
-        {
-            var temp = result.value[1];
-            this.switchWindow(temp);
-        })
-        .pause(5000)
+    // Step 3 - Click on 'Connect with Facebook'
+    playbackPage.expect.element('@useFbButton').to.be.visible.before(5000);
+    playbackPage.click('@useFbButton');
 
-// Step 3 - Click on 'Connect with Facebook'
+    client.pause(1000);
 
-        .useCss()
-        .waitForElementVisible('body', 5000)
-        .useXpath()
-        .waitForElementPresent("//button[@id='useFbButton']", 5000)
-        .click("//button[@id='useFbButton']")
-        .pause(3000)
+    specHelper.switchToLastWindow(client);
 
-//Step 4 - cancel the app approval
+    //Step 4 - cancel the app approval
+    const facebookPopupPage = client.page.facebookPopup();
+    facebookPopupPage.expect.element('@cancelButton').to.be.visible.before(5000);
+    facebookPopupPage.click('@cancelButton');
 
-        .window_handles(function(result)
-        {
-            var temp = result.value[2];
-            this.switchWindow(temp);
-        })
-        .useCss()
-        .waitForElementVisible('body', 3000)
-        .useXpath()
-        .waitForElementPresent("//button[@name='__CANCEL__']", 8000)
-        .click("//button[@name='__CANCEL__']")
-        .pause(10000)
+    specHelper.switchWindowByIdx(client, 0);
 
-//Step 5 - Play the video
+    //Step 5 - Play the video
+    playbackPage.expect.element('@bigPlayButton').to.be.visible.before(10000);
+    playbackPage.play();
+    client.pause(5000);
+  },
 
-        .window_handles(function(result)
-        {
-              var temp = result.value[1];
-              this.switchWindow(temp);
-        })
-        .waitForElementVisible("//span[@id='controls-play']", 9000)
-        .click("//span[@id='controls-play']")
-
-        .frame('previewVideo', function () {
-         client
-        .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
-        .click("//span[@id='controls-play']")
-        .pause(4000)
-        .click("//span[@id='controls-play']")
-        .pause(4000)
-        })
-
-        .end();
+  after(client) {
+    client.end();
   }
 };

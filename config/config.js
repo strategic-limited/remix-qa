@@ -12,6 +12,10 @@ module.exports = {
     login: 'yvglrcw_wongwitz_1468002772@tfbnw.net',
     password: 'JPsRq5vMuzn'
   },
+  otherFacebookAccount: {
+    login: 'labczzw_warmanwitz_1468246590@tfbnw.net',
+    password: 'Abcdefgh@123'
+  },
   anotherFacebookAccount: {
     login: 'test15july@gmail.com',
     password: 'Abcdefgh@123'

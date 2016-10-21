@@ -10,7 +10,7 @@ module.exports = {
   before(client) {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
-    specHelper.loginToFb(client, config.anotherFacebookAccount);
+    specHelper.loginToFb(client, config.facebookAccounts.real);
   },
 
   'Playback in FB tab (app not approved)'(client) {

@@ -1,158 +1,56 @@
-var host = 'https://www.facebook.com/';
-module.exports =
-{
+const specHelper = require('../lib/spec-helper');
+const config = require('../config/config');
 
-    'Social campaign FB app approval': function(client)
-     {
+module.exports = {
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - open facebook and login.
+    specHelper.loginToFb(client, config.facebookAccounts.publisher);
+    // Step 2 - open video remix in new window and Login.
+    specHelper.loginToVr(client);
+  },
 
-// Step 1 - open facebook and login.
+  'Social campaign FB app approval'(client) {
 
-        client
-		    .windowMaximize()
-        .url(host)
-			  .waitForElementPresent("body" , 3000)
-			  .useXpath()
-        .setValue("//input[@id='email']","hubjbxj_valtchanovescu_1468245451@tfbnw.net")
-        .setValue("//input[@id='pass']","Abcdefgh@123")
-			  .waitForElementPresent("//input[@type='submit']" , 3000)
-        .click("//input[@type='submit']")
-        .pause(3000)
-    //    .waitForElementPresent("//div[@id='u_0_2']" , 4000)
+    // Step 4 - Open remix Editor
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/28202/remix');
 
-// Step 2 - open video remix in new window and Login.
+    // Step 5 - remix editor - save video
+    editorPage.saveVideo();
 
-        .execute(function(newWindow)
-      			{
-                      window.open('https://app.videoremix.io/login', null, "height=1024,width=1524");
-            }, [host])
+    // Step 6 - Go to Social Campaign
+    editorPage.expect.element('@produceTab').to.be.visible.before(3000);
+    editorPage.click('@produceTab');
 
-        .window_handles(function(result)
-      			{
-                      var temp = result.value[1];
-                      this.switchWindow(temp);
-            })
+    editorPage.expect.element('@socialCampaignButton').to.be.visible.before(5000);
+    editorPage.click('@socialCampaignButton');
 
-      		.useCss()
-      		.waitForElementVisible('body', 5000)
-      		.useXpath()
-          .waitForElementPresent("//input[@name='uid']" , 2000)
-          .setValue("//input[@name='uid']","test03@gmail.com")
-          .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-    			.click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-          .pause(3000)
+    editorPage.expect.element('@personalizationModal').to.be.visible.before(10000);
 
-/* // Step 3 -  after remix login closing pop up. (This functionality has been removed)
-                  .useCss()
-                  .waitForElementVisible('body', 3000)
-                  .useXpath()
-                  .waitForElementPresent("//h2" , 3000)
-                  .click("//button[@title='Close']")
-                  .useCss()
-                  .waitForElementVisible('body', 2000) */
+    editorPage.expect.element('@personalizationModalNext1').to.be.visible.before(100);
+    editorPage.click('@personalizationModalNext1');
 
-// Step 3 - After remix login verifying Templates pages
-          .waitForElementVisible("//a[@data-section='templates']", 3000)
+    editorPage.expect.element('@personalizationModalConnectWithFbButton').to.be.visible.before(6000);
+    editorPage.click('@personalizationModalConnectWithFbButton');
 
-// Step 4 - Open remix Editor
+    //Step 8 - facebook App Approval
+    specHelper.switchToLastWindow(client);
 
-          .url("https://app.videoremix.io/editor/28202/remix")
-          .useXpath()
-          .pause(10000)
-        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-          .waitForElementVisible("//button[@type='button']", 2000)
-          .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
-          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-          .pause(3000)
-          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+    const facebookPopupPage = client.page.facebookPopup();
+    facebookPopupPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPopupPage.click('@confirmButton');
+    client.pause(3000);
+    facebookPopupPage.click('@confirmButton');
 
+    specHelper.switchWindowByIdx(client, 0);
 
-// Step 5 - remix editor - save video
+    editorPage.expect.element('@personalizationModalFbTabsList').to.be.visible.before(8000);
 
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-          .click("//button[contains(text(),'Save')]")
-          .setValue("//input[@class='input title-input']",new Date())
+  },
 
-          .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-          .click("//span[contains(text(),'Save')]")
-          .pause(5000) //delete the three lines after the issue get fixed
-          .waitForElementVisible("//button[contains(text(),'Save')]", 10000)
-          .click("//button[contains(text(),'Save')]")
-          .pause(10000)
+  after(client) {
+    specHelper.cancelAppInFb(client);
+    client.end();
+  }
 
-// Step 6 - Go to Social Campaign
-
-          .waitForElementVisible("//a[contains(text(),'Produce & Share')]", 10000)  //remove the two lines after issue get fixed
-          .click("//a[contains(text(),'Produce & Share')]")
-
-          .waitForElementVisible("//a[@id='embedSocialBtn']", 5000)
-          .click("//a[@id='embedSocialBtn']")
-          .pause(10000)
-
-// Step 7 - verify Social campaign and move to FB app approval step
-
-          .window_handles(function(result)
-          {
-                  var temp = result.value[2];
-                  this.switchWindow(temp);
-          })
-
-          .waitForElementVisible("//div[@id='personalization-modal']", 10000)
-          .click("//div[@id='personalization-modal']")
-          .waitForElementVisible("//a[@id='hideform1']",10000)
-          .click("//a[@id='hideform1']")
-          .pause(4000)
-          .waitForElementVisible("//a[@id='connectWithFbButton']", 6000)
-          .click("//a[@id='connectWithFbButton']")
-          .pause(4000)
-
-//Step 8 - facebook App Approval
-
-          .window_handles(function(result)
-                    {
-                              var temp = result.value[2];
-                              this.switchWindow(temp);
-                    })
-
-          .useCss()
-          .waitForElementVisible('body', 3000)
-          .useXpath()
-          .pause(5000)
-          .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
-          .click("//button[@name='__CONFIRM__']")
-          .pause(10000)
-          .click("//button[@name='__CONFIRM__']")
-          .pause(10000)
-          .window_handles(function(result)
-          {
-
-                        var temp = result.value[1];
-                        this.switchWindow(temp);
-
-          })
-
-
-        .waitForElementVisible("//select[@id='fbTabs']", 4000)
-
-// Step 9 - Verify app approval on Facebook
-
-        .url("https://www.facebook.com/settings?tab=applications")
-        .pause(10000)
-
-// Step 10 - Cancel publisher app approval
-
-          .waitForElementVisible("//div[@role='button']", 5000)
-          .pause(7000)
-          .click("//div[@role='button']")
-          .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-          .click("//a[contains(text(),'Remove App')]")
-          .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
-          .click("//input[@name='ok']")
-          .pause(6000)
-          .end();
-
-          }
-      };
+};

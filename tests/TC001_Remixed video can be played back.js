@@ -17,11 +17,7 @@ module.exports = {
     const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/27102/remix');
 
     //    Step 4 - remix editor - save video
-    editorPage.expect.element('@saveButton').to.be.visible.before(2000);
-    editorPage.click('@saveButton');
-
-    editorPage.setValue('@savePopupTitleInput', new Date());
-    editorPage.click('@savePopupSaveButton');
+    editorPage.saveVideo();
 
     editorPage.expect.element('@previewButton').to.be.visible.before(2000);
     editorPage.click('@previewButton');
@@ -53,11 +49,11 @@ module.exports = {
     client.pause(4000);
     playbackPage.click('@playButton');
 
-    // step 8 - navigate to facebook
-    specHelper.cancelAppInFb(client);
   },
 
   after(client) {
+    // step 8 - navigate to facebook
+    specHelper.cancelAppInFb(client);
     client.end();
   }
 

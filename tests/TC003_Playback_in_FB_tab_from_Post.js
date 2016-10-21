@@ -8,7 +8,7 @@ module.exports = {
   before(client) {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
-    specHelper.loginToFb(client, config.anotherFacebookAccount, true);
+    specHelper.loginToFb(client, config.facebookAccounts.real, true);
   },
 
   'Playback in FB tab from Post'(client) {
@@ -31,7 +31,7 @@ module.exports = {
     client.pause(4000);
     playbackPage.click('@playButton');
 
-// step 3 - navigate to facebook and cancel the VR App
+    // step 3 - navigate to facebook and cancel the VR App
     specHelper.cancelAppInFb(client);
   },
 

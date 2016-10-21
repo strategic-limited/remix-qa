@@ -1,74 +1,24 @@
+const specHelper = require('../lib/spec-helper');
+const config = require('../config/config');
 var host = 'https://www.facebook.com/';
-module.exports =
-{
+module.exports = {
 
-    'Social Campaign Publish to existing FB tab': function(client)
-     {
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - open facebook and login.
+    specHelper.loginToFb(client, config.facebookAccounts.real, true);
+    // Step 2 - open video remix in new window and Login.
+    specHelper.loginToVr(client);
+  },
 
-// Step 1 - open facebook and login.
+  'Social Campaign Publish to existing FB tab'(client) {
 
-        client
-		    .windowMaximize()
-        .url(host)
-			  .waitForElementPresent("body" , 3000)
-			  .useXpath()
-        .setValue("//input[@id='email']","test15july.1@gmail.com")
-        .setValue("//input[@id='pass']","Abcdefgh@123")
-			  .waitForElementPresent("//input[@type='submit']" , 3000)
-        .click("//input[@type='submit']")
-        //.waitForElementPresent("//div[@id='u_0_2']" , 4000)
+    // Step 4 - Open remix Editor
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/28202/remix');
 
-// Step 2 - open video remix in new window and Login.
+    editorPage.saveVideo();
 
-        .execute(function(newWindow)
-      			{
-                      window.open('https://app.videoremix.io/login', null, "height=1600,width=1500");
-            }, [host])
-
-        .window_handles(function(result)
-      			{
-                      var temp = result.value[1];
-                      this.switchWindow(temp);
-            })
-
-      		.useCss()
-      		.waitForElementVisible('body', 3000)
-      		.useXpath()
-          .waitForElementPresent("//input[@name='uid']" , 2000)
-          .setValue("//input[@name='uid']","test03@gmail.com")
-          .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-    			.click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-          .pause(3000)
-
-/* // Step 3 -  after remix login closing pop up. (This functionality has been removed)
-                  .useCss()
-                  .waitForElementVisible('body', 3000)
-                  .useXpath()
-                  .waitForElementPresent("//h2" , 3000)
-                  .click("//button[@title='Close']")
-                  .useCss()
-                  .waitForElementVisible('body', 2000) */
-
-// Step 3 - After remix login verifying Templates pages
-          .waitForElementVisible("//a[@data-section='templates']", 3000)
-
-// Step 4 - Open remix Editor
-
-          .url("https://app.videoremix.io/editor/28202/remix")
-          .useXpath()
-          .pause(10000)
-        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-          .waitForElementVisible("//button[@type='button']", 2000)
-          .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
-          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-          .pause(3000)
-          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
-
-
+    client
 // Step 5 - remix editor - save video
 
           .waitForElementVisible("//button[contains(text(),'Save')]", 3000)
@@ -256,5 +206,5 @@ module.exports =
 
               .end();
 
-          }
-  };
+  }
+};

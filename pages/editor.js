@@ -23,11 +23,15 @@ module.exports = {
     },
 
     elementsTab: 'a.butter-editor-header-popcorn',
+    produceTab: 'a.butter-editor-header-share',
+
     lowerThirdsElement: {
       selector: '//span[contains(text(),"Lower Thirds & Combo Elements")]',
       locateStrategy: 'xpath'
     },
     lowerThirdsModalTitle: 'h3.combined-modal-title',
+
+    socialCampaignButton: '#embedSocialBtn',
 
     previewButton: {
       selector: '//div[@id="preview-icon"]',
@@ -45,11 +49,26 @@ module.exports = {
     savePopupSaveButton: {
       selector: '//span[contains(text(),"Save")]',
       locateStrategy: 'xpath'
-    }
+    },
+
+    personalizationModal: '#personalization-modal',
+    personalizationModalNext1: '#hideform1',
+    personalizationModalConnectWithFbButton: '#connectWithFbButton',
+    personalizationModalFbTabsList: '#fbTabs'
   },
 
   commands: [{
-    selectThumbnailInSavePopup: function(dataSource) {
+    saveVideo(title) {
+      title = title || new Date();
+
+      this.expect.element('@saveButton').to.be.visible.before(2000);
+      this.click('@saveButton');
+
+      this.setValue('@savePopupTitleInput', title);
+      this.click('@savePopupSaveButton');
+    },
+
+    selectThumbnailInSavePopup(dataSource) {
       const selector = `li[data-source="${dataSource}"]`;
       this.expect.element(selector).to.be.visible.before(2000);
       return this.click(selector);

@@ -8,17 +8,28 @@ module.exports = {
     password: 'Abcdefgh@123'
   },
   FACEBOOK_URL: 'https://www.facebook.com/',
-  facebookAccount: {
-    login: 'yvglrcw_wongwitz_1468002772@tfbnw.net',
-    password: 'JPsRq5vMuzn'
+  facebookAccounts: {
+    viewer: {
+      login: 'yvglrcw_wongwitz_1468002772@tfbnw.net',
+      password: 'JPsRq5vMuzn'
+    },
+    publisher: {
+      login: 'hubjbxj_valtchanovescu_1468245451@tfbnw.net',
+      password: 'Abcdefgh@123'
+    },
+    real: {
+      login: 'test15july@gmail.com',
+      password: 'Abcdefgh@123'
+    }
   },
+  // publisher
   otherFacebookAccount: {
-    login: 'labczzw_warmanwitz_1468246590@tfbnw.net',
+    login: 'hubjbxj_valtchanovescu_1468245451@tfbnw.net',
     password: 'Abcdefgh@123'
   },
+  // real account
   anotherFacebookAccount: {
     login: 'test15july@gmail.com',
     password: 'Abcdefgh@123'
-  },
-  facebookAppName: 'VidCloud.io'
+  }
 };

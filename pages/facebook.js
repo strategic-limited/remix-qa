@@ -11,22 +11,13 @@ module.exports = {
     emailField: 'input#email',
     passwordField: 'input#pass',
     submitButton: 'input[type="submit"]',
-    removeAppDiv: {
-      selector: '//div[@id="u_1_0"]',
-      locateStrategy: 'xpath'
-    },
+    appDiv: 'div#u_1_0',
     removeAppLink: {
       selector: '//a[contains(text(),"Remove App")]',
       locateStrategy: 'xpath'
     },
-    removeAppConfirmationTitle: {
-      selector: `//span[contains(text(),"Remove ${config.facebookAppName}?")]`,
-      locateStrategy: 'xpath'
-    },
-    removeAppConfirmationOkButton: {
-      selector: '//input[@name="ok"]',
-      locateStrategy: 'xpath'
-    }
+    removeAppConfirmationTitle: '#title_dialog_0',
+    removeAppConfirmationOkButton: 'input[name="ok"]'
   },
   commands: [{
     submit: function() {

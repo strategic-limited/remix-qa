@@ -21,6 +21,14 @@ module.exports = {
       selector: '//button[contains(text(),"Save")]',
       locateStrategy: 'xpath'
     },
+
+    elementsTab: 'a.butter-editor-header-popcorn',
+    lowerThirdsElement: {
+      selector: '//span[contains(text(),"Lower Thirds & Combo Elements")]',
+      locateStrategy: 'xpath'
+    },
+    lowerThirdsModalTitle: 'h3.combined-modal-title',
+
     previewButton: {
       selector: '//div[@id="preview-icon"]',
       locateStrategy: 'xpath'

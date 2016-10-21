@@ -1,62 +1,35 @@
-var host = 'https://app.videoremix.io/login';
-module.exports =
-{
+const specHelper = require('../lib/spec-helper');
+const config = require('../config/config');
 
-  'Preview LOWER THIRDS & COMBO ELEMENTS': function(client)
-   {
+module.exports = {
 
-// Step 1 - Login to VR editor
-   client
-      .windowMaximize()
-      .url(host)
-      .useCss()
-      .waitForElementVisible('body', 3000)
-      .useXpath()
-      .waitForElementPresent("//input[@name='uid']" , 2000)
-      .setValue("//input[@name='uid']","test03@gmail.com")
-      .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-      .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-      .pause(3000)
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - Login to VR editor
+    // Step 2 - After remix login verifying Templates pages
+    specHelper.loginToVr(client);
+  },
 
-/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
-              .useCss()
-              .waitForElementVisible('body', 3000)
-              .useXpath()
-              .waitForElementPresent("//h2" , 3000)
-              .click("//button[@title='Close']")
-              .useCss()
-              .waitForElementVisible('body', 2000) */
+  'Preview LOWER THIRDS & COMBO ELEMENTS'(client) {
 
-// Step 3 - After remix login verifying Templates pages
-            .waitForElementVisible("//a[@data-section='templates']", 3000)
+    // Step 4 - Open remix Editor
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/28082/remix');
 
-// Step 4 - Open remix Editor
+    //Step 5 - Click on Elements and click on Lower thirds and combo Elements
+    editorPage.expect.element('@elementsTab').to.be.visible.before(3000);
+    editorPage.click('@elementsTab');
 
-            .url("https://app.videoremix.io/editor/28082/remix")
-            .useXpath()
-            .pause(5000)
-          /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-            .waitForElementVisible("//button[@type='button']", 2000)
-            .click("//button[@type='button']") */                 // this has been removed from editor
-            .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 10000)
-            .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-            .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-            .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-            .pause(3000)
-            .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-            .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+    client.execute('scrollTo(0,1500)');
 
-//Step 5 - Click on Elements and click on Lower thirds and combo Elements
+    editorPage.expect.element('@lowerThirdsElement').to.be.visible.before(3000);
+    editorPage.click('@lowerThirdsElement');
 
-            .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-            .pause(5000)
-            .click("//span[@class='icon icon-white icon-plus']")
-            .pause(5000)
-            .execute('scrollTo(0,1500)')
-            .waitForElementVisible("//span[contains(text(),'Lower Thirds & Combo Elements')]", 3000)
-            .click("//span[contains(text(),'Lower Thirds & Combo Elements')]")
-            .waitForElementVisible("//h3", 3000)
-            .end();
+    editorPage.expect.element('@lowerThirdsModalTitle').to.be.visible.before(3000);
 
-          }
+  },
+
+  after(client) {
+    client.end();
+  }
+
 };

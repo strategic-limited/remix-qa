@@ -1,210 +1,125 @@
+'use strict';
+
 const specHelper = require('../lib/spec-helper');
 const config = require('../config/config');
-var host = 'https://www.facebook.com/';
+
 module.exports = {
 
   before(client) {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
     specHelper.loginToFb(client, config.facebookAccounts.real, true);
+    specHelper.cancelAppInFb(client);
     // Step 2 - open video remix in new window and Login.
     specHelper.loginToVr(client);
   },
 
   'Social Campaign Publish to existing FB tab'(client) {
 
+    let fieldValue1;
+    let fieldValue2;
+
     // Step 4 - Open remix Editor
     const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/28202/remix');
 
+    // Step 5 - remix editor - save video
     editorPage.saveVideo();
 
-    client
-// Step 5 - remix editor - save video
+    // Step 6 - Go to Social Campaign
+    editorPage.expect.element('@produceTab').to.be.visible.before(3000);
+    editorPage.click('@produceTab');
 
-          .waitForElementVisible("//button[contains(text(),'Save')]", 3000)
-          .click("//button[contains(text(),'Save')]")
-          .setValue("//input[@class='input title-input']",new Date())
-          .waitForElementVisible("//span[contains(text(),'Save')]", 5000)
-          .click("//span[contains(text(),'Save')]")   //delete below one after test pasess
-          .pause(5000)
-          .waitForElementVisible("//button[contains(text(),'Save')]", 5000)
-          .click("//button[contains(text(),'Save')]")
-          .pause(5000)
-          .waitForElementVisible("//a[contains(text(),'Produce & Share')]", 4000)
-          .click("//a[contains(text(),'Produce & Share')]")
+    editorPage.expect.element('@socialCampaignButton').to.be.visible.before(5000);
+    editorPage.click('@socialCampaignButton');
 
+    // Step 7 - verify Social campaign and move to next step
+    editorPage.expect.section('@personalizationModal').to.be.visible.before(10000);
 
-// Step 6 - Go to Social Campaign
+    var personalizationModalSection = editorPage.section.personalizationModal;
 
-          .pause(10000)
-          .waitForElementVisible("//a[@id='embedSocialBtn']", 3000)
-          .click("//a[@id='embedSocialBtn']")
-          .pause(10000)
+    personalizationModalSection.expect.element('@next1').to.be.visible.before(100);
+    personalizationModalSection.click('@next1');
 
+    // Step 8 - Social campaign login with facebook
+    personalizationModalSection.expect.element('@connectWithFbButton').to.be.visible.before(6000);
+    personalizationModalSection.click('@connectWithFbButton');
 
-// Step 7 - verify Social campaign and move to next step
-          .window_handles(function(result)
-              {
-                        var temp = result.value[2];
-                        this.switchWindow(temp);
-              })
+    //Step 9 - facebook App Approval
+    specHelper.switchToLastWindow(client);
 
-            .waitForElementVisible("//div[@id='personalization-modal']", 20000)
-            .click("//div[@id='personalization-modal']")
-            .waitForElementVisible("//a[@id='hideform1']",10000)
-            .click("//a[@id='hideform1']")
+    const facebookPopupPage = client.page.facebookPopup();
+    facebookPopupPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPopupPage.click('@confirmButton');
+    client.pause(3000);
+    facebookPopupPage.click('@confirmButton');
 
-// Step 8 - Social campaign login with facebook
+    specHelper.switchWindowByIdx(client, 0);
 
-            .waitForElementVisible("//a[@id='connectWithFbButton']", 5000)
-            .click("//a[@id='connectWithFbButton']")
-            .pause(4000)
+    personalizationModalSection.expect.element('@fbTabsList').to.be.visible.before(8000);
+    personalizationModalSection.click('@fbTabsList');
 
+    // Step 8 - Social campaign facebook pages - make a selection
+    personalizationModalSection.click('@fbNewTabOption');
+    specHelper.pressEnter(client);
 
-//Step 9 - facebook App Approval
+    personalizationModalSection.clearValue('@fbTabName');
+    personalizationModalSection.setValue('@fbTabName', 'Test video');
 
-              .window_handles(function(result)
-              {
+    personalizationModalSection.expect.element('@showPostFormButton').to.be.visible.before(3000);
+    personalizationModalSection.click('@showPostFormButton');
+    personalizationModalSection.expect.element('@fbPostTitle').to.be.visible.before(3000);
+    personalizationModalSection.getValue('@fbPostTitle', function(result) {
+      fieldValue1 = result.value;
+      console.log(fieldValue1);
+    });
 
-                        var temp = result.value[2];
-                        this.switchWindow(temp);
+    personalizationModalSection.click('@shareButton');
 
-              })
+    client.pause(10000);
+    specHelper.pressEnter(client);
+    for (let i = 0; i < 7; i++) {
+      specHelper.pressTab(client);
+    }
+    specHelper.pressEnter(client);
+    client.pause(5000);
 
-              .useCss()
-              .waitForElementVisible('body', 3000)
-              .useXpath()
-              .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
-              .click("//button[@name='__CONFIRM__']")
-              .pause(10000)
-              .click("//button[@name='__CONFIRM__']")
-              .window_handles(function(result)
-              {
+    // Step 9  - open facebook and go to timeline
+    const facebookPage = client.page.facebook();
+    facebookPage.navigate();
 
-                            var temp = result.value[1];
-                            this.switchWindow(temp);
+    facebookPage.expect.element('@profileLink').to.be.visible.before(5000);
+    facebookPage.click('@profileLink');
 
-              })
+    const facebookPostPage = client.page.facebookPost();
+    facebookPostPage.expect.element('@postTitleDiv').to.be.visible.before(8000);
+    facebookPostPage.getText('@postTitleDiv', function(result) {
+      fieldValue2 = result.value;
+      console.log(fieldValue2);
+      client.assert.equal(fieldValue1, fieldValue2)
+    });
+    facebookPostPage.expect.element('@postLink').to.be.visible.before(1000);
+    facebookPostPage.openPost();
 
-// Step 8 - Social campaign facebook pages - make a selection
+    specHelper.switchToLastWindow(client);
 
-              .waitForElementVisible("//select[@id='fbTabs']", 7000)
-              .click("//select[@id='fbTabs']")
-              .pause(2000)
-              .click("//option[@value='newTab']")
-              .keys(['\uE006'])
-              .clearValue("//input[@id='fbTabName']")
-              .setValue("//input[@id='fbTabName']" , "Test video")
-              .pause(4000)
-              .click("//a[@id='showPostForm']")
-              .pause(4000)
+    facebookPostPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPostPage.confirm();
+    facebookPostPage.expect.element('@videoFrame').to.be.visible.before(15000);
 
-              .getValue("//input[@id='fbPostTitle']", function(result1)
-                {
-                  fieldValue1 = result1.value;
-                  console.log(fieldValue1);
-                })
+    client.frame(2);
+    const playbackPage = client.page.playback();
+    playbackPage.expect.element('@playButton').to.be.visible.before(20000);
+    playbackPage.click('@playButton');
+    client.pause(4000);
+    playbackPage.click('@playButton');
+  },
 
-              .click("//a[@id='done4']")
-              .pause(15000)
-              .keys(['\uE006'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE004'])
-              .keys(['\uE006'])
-              .pause(5000)
+  after(client) {
+    // cancel 2 apps
+    specHelper.cancelAppInFb(client);
+    specHelper.cancelAppInFb(client);
 
-// Step 9  - open facebook and go to timeline
-
-              .url("https://www.facebook.com/")
-              .waitForElementVisible("//a[@data-testid='blue_bar_profile_link']", 5000)
-              .click("//a[@data-testid='blue_bar_profile_link']")
-              .pause(5000)
-
-              .waitForElementVisible("(//div[@class='mbs _6m6 _2cnj _5s6c']/a)[1]", 8000)
-
-              .getText("(//div[@class='mbs _6m6 _2cnj _5s6c']/a)[1]", function(result2)
-                {
-                  fieldValue2 = result2.value;
-                  console.log(fieldValue2);
-                  client.assert.equal(fieldValue1, fieldValue2)
-                })
-
-
-// Step - Click on the Post and user get redirect to FB tab
-
-              .click("(//div[@class='_6l- __c_'])[1]")
-              .pause(8000)
-
-              .window_handles(function(result)
-              {
-                  var temp = result.value[2];
-                  this.switchWindow(temp);
-              })
-
-              .useCss()
-              .waitForElementVisible('body', 3000)
-              .useXpath()
-              .waitForElementVisible("//button[@name='__CONFIRM__']", 8000)
-              .click("//button[@name='__CONFIRM__']")
-              .pause(30000)
-              .execute('scrollTo(0,3000)')
-
-              /*.window_handles(function(result)
-              {
-                  var temp = result.value[1];
-                  this.switchWindow(temp);
-              })*/
-
-
-              .frame(2, function() {
-               client
-               .pause(5000)
-               .waitForElementVisible("//span[@id='controls-play']", 10000)
-              .click("//span[@id='controls-play']")
-              .waitForElementVisible("//span[contains(text(),'0:09')]", 9000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-              .click("//span[@id='controls-play']")
-              .pause(4000)
-              })
-
-// step 8 - navigate to facebook and cancel the VR App
-
-              .url("https://www.facebook.com/settings?tab=applications")
-              .pause(10000)
-              .waitForElementVisible("(//div[@role='button'])[1]", 5000)
-              .pause(7000)
-              .click("(//div[@role='button'])[1]")
-              .pause(3000)
-              .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-              .click("//a[contains(text(),'Remove App')]")
-              .pause(3000)
-              .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
-              .click("//input[@name='ok']")
-              .pause(5000)
-              
-               .window_handles(function(result)
-              {
-                  var temp = result.value[2];
-                  this.switchWindow(temp);
-              })
-
-              .waitForElementVisible("//div[contains(text(), 'VidCloud.io')]", 5000)
-              .pause(7000)
-              .click("//div[contains(text(), 'VidCloud.io')]")
-              .pause(3000)
-              .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-              .click("//a[contains(text(),'Remove App')]")
-              .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
-              .click("//input[@name='ok']")
-              .pause(6000)
-
-              .end();
-
+    client.end();
   }
+
 };

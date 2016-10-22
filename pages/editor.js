@@ -24,12 +24,21 @@ module.exports = {
 
     elementsTab: 'a.butter-editor-header-popcorn',
     produceTab: 'a.butter-editor-header-share',
+    adobeEditorButton: {
+      selector: '//button[contains(text(),"Adobe Editor")]',
+      locateStrategy: 'xpath'
+    },
 
     lowerThirdsElement: {
       selector: '//span[contains(text(),"Lower Thirds & Combo Elements")]',
       locateStrategy: 'xpath'
     },
     lowerThirdsModalTitle: 'h3.combined-modal-title',
+    imageElement: {
+      selector: '//span[contains(text(),"image")]',
+      locateStrategy: 'xpath'
+    },
+    imageUrlInput: 'input#image-url-input',
 
     socialCampaignButton: '#embedSocialBtn',
 
@@ -51,13 +60,48 @@ module.exports = {
       locateStrategy: 'xpath'
     },
 
-    personalizationModal: '#personalization-modal',
-    personalizationModalNext1: '#hideform1',
-    personalizationModalConnectWithFbButton: '#connectWithFbButton',
-    personalizationModalFbTabsList: '#fbTabs'
+    playButton: 'span[class="icon icon-white icon-only icon-play"]'
+  },
+
+  sections: {
+    personalizationModal: {
+      selector: '#personalization-modal',
+      elements: {
+        next1: '#hideform1',
+        connectWithFbButton: '#connectWithFbButton',
+        fbTabsList: '#fbTabs',
+        fbNewTabOption: 'option[value="newTab"]',
+        fbExistingTabOption: {
+          selector: '(//select[@id="fbTabs"]/option)[3]',
+          locateStrategy: 'xpath'
+        },
+        fbTabName: 'input#fbTabName',
+        showPostFormButton: 'a#showPostForm', // Next
+        shareButton: 'a#done4', // Next
+        fbPostTitle: 'input#fbPostTitle'
+      }
+    },
+    adobeEditorModal: {
+      selector: '#avpw_controls',
+      elements: {
+        framesButton: '[data-toolname="frames"]',
+        curlsButton: '[data-framename="bohemia-curls"]',
+        applyButton: 'a#avpw_apply_container',
+        saveButton: 'a#avpw_save_button',
+        bohemiaButton: {
+          selector: '//span[contains(text(),"Bohemia")]',
+          locateStrategy: 'xpath'
+        }
+      }
+    }
   },
 
   commands: [{
+    checkTimelineItems(idx) {
+      const selector = `(//div[@class='title'])[${idx}]`;
+      this.useXpath().waitForElementVisible(selector);
+    },
+
     saveVideo(title) {
       title = title || new Date();
 

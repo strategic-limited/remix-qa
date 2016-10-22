@@ -8,7 +8,7 @@ module.exports = {
   before(client) {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
-    specHelper.loginToFb(client, config.facebookAccounts.real, true);
+    specHelper.loginToFb(client, config.facebookAccounts.real);
   },
 
   'Playback in FB tab from Post'(client) {

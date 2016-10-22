@@ -17,7 +17,16 @@ module.exports = {
       locateStrategy: 'xpath'
     },
     removeAppConfirmationTitle: '#title_dialog_0',
-    removeAppConfirmationOkButton: 'input[name="ok"]'
+    removeAppConfirmationOkButton: 'input[name="ok"]',
+    profileLink: 'a[data-testid="blue_bar_profile_link"]',
+    postTitleDiv: {
+      selector: '(//div[@class="mbs _6m6 _2cnj _5s6c"]/a)[1]',
+      locateStrategy: 'xpath'
+    },
+    postVideoDiv: {
+      selector: '(//div[@class="_6l- __c_"])[1]',
+      locateStrategy: 'xpath'
+    }
   },
   commands: [{
     submit: function() {

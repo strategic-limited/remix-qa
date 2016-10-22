@@ -5,6 +5,10 @@
 
 module.exports = {
   elements: {
+    postTitleDiv: {
+      selector: '(//div[@class="mbs _6m6 _2cnj _5s6c"]/a)[1]',
+      locateStrategy: 'xpath'
+    },
     postLink: {
       selector: '(//div[@class="_6l- __c_"])',
       locateStrategy: 'xpath'

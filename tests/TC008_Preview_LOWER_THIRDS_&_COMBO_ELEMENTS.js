@@ -1,3 +1,5 @@
+'use strict';
+
 const specHelper = require('../lib/spec-helper');
 const config = require('../config/config');
 

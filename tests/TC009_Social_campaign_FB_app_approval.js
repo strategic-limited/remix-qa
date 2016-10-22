@@ -1,3 +1,5 @@
+'use strict';
+
 const specHelper = require('../lib/spec-helper');
 const config = require('../config/config');
 
@@ -5,7 +7,7 @@ module.exports = {
   before(client) {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
-    specHelper.loginToFb(client, config.facebookAccounts.publisher);
+    specHelper.loginToFb(client, config.facebookAccounts.publisher, true);
     // Step 2 - open video remix in new window and Login.
     specHelper.loginToVr(client);
   },
@@ -25,13 +27,15 @@ module.exports = {
     editorPage.expect.element('@socialCampaignButton').to.be.visible.before(5000);
     editorPage.click('@socialCampaignButton');
 
-    editorPage.expect.element('@personalizationModal').to.be.visible.before(10000);
+    editorPage.expect.section('@personalizationModal').to.be.visible.before(10000);
 
-    editorPage.expect.element('@personalizationModalNext1').to.be.visible.before(100);
-    editorPage.click('@personalizationModalNext1');
+    var personalizationModalSection = editorPage.section.personalizationModal;
 
-    editorPage.expect.element('@personalizationModalConnectWithFbButton').to.be.visible.before(6000);
-    editorPage.click('@personalizationModalConnectWithFbButton');
+    personalizationModalSection.expect.element('@next1').to.be.visible.before(100);
+    personalizationModalSection.click('@next1');
+
+    personalizationModalSection.expect.element('@connectWithFbButton').to.be.visible.before(6000);
+    personalizationModalSection.click('@connectWithFbButton');
 
     //Step 8 - facebook App Approval
     specHelper.switchToLastWindow(client);
@@ -44,7 +48,7 @@ module.exports = {
 
     specHelper.switchWindowByIdx(client, 0);
 
-    editorPage.expect.element('@personalizationModalFbTabsList').to.be.visible.before(8000);
+    personalizationModalSection.expect.element('@fbTabsList').to.be.visible.before(8000);
 
   },
 

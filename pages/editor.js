@@ -45,6 +45,11 @@ module.exports = {
       locateStrategy: 'xpath'
     },
 
+    dropMockElement: {
+      selector: '//button[contains(text(),"DropMock")]',
+      locateStrategy: 'xpath'
+    },
+
     socialCampaignButton: '#embedSocialBtn',
 
     previewButton: {

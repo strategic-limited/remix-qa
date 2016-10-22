@@ -40,6 +40,11 @@ module.exports = {
     },
     imageUrlInput: 'input#image-url-input',
 
+    youzignElement: {
+      selector: '//button[contains(text(),"Youzign")]',
+      locateStrategy: 'xpath'
+    },
+
     socialCampaignButton: '#embedSocialBtn',
 
     previewButton: {
@@ -99,7 +104,7 @@ module.exports = {
   commands: [{
     checkTimelineItems(idx) {
       const selector = `(//div[@class='title'])[${idx}]`;
-      this.useXpath().waitForElementVisible(selector);
+      this.api.useXpath().waitForElementVisible(selector, 2000);
     },
 
     saveVideo(title) {

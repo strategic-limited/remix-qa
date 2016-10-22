@@ -1,93 +1,61 @@
-var host = 'https://app.videoremix.io/login';
-module.exports =
-{
+'use strict';
 
-  'Check Editing images from Adobe Editor': function(client)
-   {
+const specHelper = require('../lib/spec-helper');
 
-// Step 1 - Login to VR editor
-      client
-      .windowMaximize()
-      .url(host)
-      .useCss()
-      .waitForElementVisible('body', 3000)
+module.exports = {
+
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - Login to VR editor
+    specHelper.loginToVr(client);
+  },
+
+  'Check Editing images from Adobe Editor'(client) {
+
+    const editorPage = specHelper.openEditorPage(client, 'https://app.videoremix.io/editor/28082/remix');
+
+    editorPage.expect.element('@elementsTab').to.be.visible.before(3000);
+    editorPage.click('@elementsTab');
+
+    // Step 5 - Add Image Element
+    editorPage.expect.element('@imageElement').to.be.visible.before(3000);
+    editorPage.click('@imageElement');
+
+    editorPage.expect.element('@youzignElement').to.be.visible.before(3000);
+    editorPage.click('@youzignElement');
+
+    client
       .useXpath()
-      .waitForElementPresent("//input[@name='uid']" , 2000)
-      .setValue("//input[@name='uid']","test03@gmail.com")
-      .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-      .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-      .pause(3000)
+      .waitForElementVisible("//h4[contains(text(),'Your Designs')]", 6000)
+      .waitForElementVisible("(//div[@class='data centeredImageContainer'])[1]", 3000)
+      .click("(//div[@class='data centeredImageContainer'])[1]")
+      .pause(3000);
 
-/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
-                        .useCss()
-                        .waitForElementVisible('body', 3000)
-                        .useXpath()
-                        .waitForElementPresent("//h2" , 3000)
-                        .click("//button[@title='Close']")
-                        .useCss()
-                        .waitForElementVisible('body', 2000) */
+    editorPage.click('@playButton');
 
-// Step 4 - Open remix Editor
+    client.pause(5000);
 
-          .url("https://app.videoremix.io/editor/28082/remix")
-          .useXpath()
-          .pause(5000)
-        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-          .waitForElementVisible("//button[@type='button']", 2000)
-          .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 20000)
-          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-          .pause(3000)
-          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+    // Step 6 - Save
+    editorPage.saveVideo();
 
-// Step 5 - Add Image Element
-          .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-          .pause(5000)
-          .click("//span[@class='icon icon-white icon-plus']")
-          .pause(5000)
-          .waitForElementVisible("//span[contains(text(),'image')]", 3000)
-          .click("//span[contains(text(),'image')]")
-          .waitForElementVisible("//button[contains(text(),'Youzign')]", 6000)
-          .click("//button[contains(text(),'Youzign')]")
-          .waitForElementVisible("//h4[contains(text(),'Your Designs')]", 6000)
-          .waitForElementVisible("(//div[@class='data centeredImageContainer'])[1]", 3000)
-          .click("(//div[@class='data centeredImageContainer'])[1]")
-          .pause(3000)
-          .click("//span[@class='icon icon-white icon-only icon-play']")
-          //take screenshot
+    // step 7 - Play preview video
+    editorPage.expect.element('@previewButton').to.be.visible.before(2000);
+    editorPage.click('@previewButton');
 
-// Step 6 - Save
-          .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-          .click("//button[contains(text(),'Save')]")
-          .setValue("//input[@class='input title-input']",new Date())
-          .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-          .click("//span[contains(text(),'Save')]")
-          .pause(3000)
-          .waitForElementVisible("//div[@id='preview-icon']", 3000)
-          .click("//div[@id='preview-icon']")
-          .pause(10000)
+    editorPage.expect.element('@previewBody').to.be.visible.before(10000);
 
-          .window_handles(function(result)
-          {
-                  var temp = result.value[1];
-                  this.switchWindow(temp);
-          })
+    client.frame('previewVideo');
+    const playbackPage = client.page.playback();
 
-// step 7 - Play preview video
+    playbackPage.expect.element('@playButton').to.be.visible.before(5000);
+    playbackPage.click('@playButton');
 
-   
-          .pause(5000)
-          .frame('previewVideo', function () {
-              client
-                  .waitForElementVisible("//span[@id='controls-play']", 5000)
-                  .click("//span[@id='controls-play']")
-                  .pause(4000)
-                  .click("//span[@id='controls-play']")
-          })
-          .end();
+    client.pause(5000);
 
-          }
-          };
+    playbackPage.click('@playButton');
+  },
+
+  after(client) {
+    client.end();
+  }
+};

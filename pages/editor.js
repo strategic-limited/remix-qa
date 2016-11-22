@@ -24,6 +24,8 @@ module.exports = {
 
     elementsTab: 'a.butter-editor-header-popcorn',
     produceTab: 'a.butter-editor-header-share',
+    advancedTab: 'a.advanced-tab',
+
     adobeEditorButton: {
       selector: '//button[contains(text(),"Adobe Editor")]',
       locateStrategy: 'xpath'
@@ -50,6 +52,19 @@ module.exports = {
       locateStrategy: 'xpath'
     },
 
+    personalizedTextElement: {
+      selector: '//span[contains(text(),"Personalized Text")]',
+      locateStrategy: 'xpath'
+    },
+    personalizedTextTextArea: 'textarea[data-manifest-key="text"]',
+    personalizeButton: {
+      selector: '//button[contains(text(),"Personalize!")]',
+      locateStrategy: 'xpath'
+    },
+
+    advancedFontSizeInput: 'input[data-manifest-key="fontSize"]',
+
+    emailCampaignButton: '#embedBtn',
     socialCampaignButton: '#embedSocialBtn',
 
     previewButton: {
@@ -88,7 +103,9 @@ module.exports = {
         fbTabName: 'input#fbTabName',
         showPostFormButton: 'a#showPostForm', // Next
         shareButton: 'a#done4', // Next
-        fbPostTitle: 'input#fbPostTitle'
+        fbPostTitle: 'input#fbPostTitle',
+        customEmailProvider: 'label[title="Custom / All Other Email Providers"]',
+        resultUrlInput: 'input#resultUrl'
       }
     },
     adobeEditorModal: {
@@ -102,6 +119,49 @@ module.exports = {
           selector: '//span[contains(text(),"Bohemia")]',
           locateStrategy: 'xpath'
         }
+      }
+    },
+    personalizerModal: {
+      selector: 'div#personalizer-modal',
+      elements: {
+        firstNameItem: {
+          selector: '//span[@class="token-name" and contains(text(),"FIRSTNAME")]',
+          locateStrategy: 'xpath'
+        },
+        lastNameItem: {
+          selector: '//span[@class="token-name" and contains(text(),"LASTNAME")]',
+          locateStrategy: 'xpath'
+        },
+        emailItem: {
+          selector: '//span[@class="token-name" and contains(text(),"EMAIL")]',
+          locateStrategy: 'xpath'
+        },
+        geoCountryItem: {
+          selector: '//span[@class="token-name" and contains(text(),"GEOCOUNTRY")]',
+          locateStrategy: 'xpath'
+        },
+        geoCityItem: {
+          selector: '//span[@class="token-name" and contains(text(),"GEOCITY")]',
+          locateStrategy: 'xpath'
+        },
+        geoStateItem: {
+          selector: '//span[@class="token-name" and contains(text(),"GEOSTATE")]',
+          locateStrategy: 'xpath'
+        },
+        nameItem: {
+          selector: '//span[@class="token-name" and contains(text(),"NAME")]',
+          locateStrategy: 'xpath'
+        },
+        genderItem: {
+          selector: '//span[@class="token-name" and contains(text(),"GENDER")]',
+          locateStrategy: 'xpath'
+        },
+        customItem: {
+          selector: '//span[@class="token-name" and contains(text(),"CUSTOM")]',
+          locateStrategy: 'xpath'
+        },
+        customInput: 'input#custom-textbox',
+        addVariableButton: '#add-variable-button'
       }
     }
   },

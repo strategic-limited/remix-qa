@@ -35,7 +35,7 @@ module.exports = {
     // Step 7 - verify Social campaign and move to next step
     editorPage.expect.section('@personalizationModal').to.be.visible.before(10000);
 
-    var personalizationModalSection = editorPage.section.personalizationModal;
+    const personalizationModalSection = editorPage.section.personalizationModal;
 
     personalizationModalSection.expect.element('@next1').to.be.visible.before(100);
     personalizationModalSection.click('@next1');

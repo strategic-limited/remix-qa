@@ -22,6 +22,14 @@ module.exports = {
       password: 'Abcdefgh@123'
     }
   },
+  facebookApps: {
+    publisher: {
+      id: '1728968890675795'
+    },
+    viewer: {
+      id: '701751126630371'
+    }
+  },
   // publisher
   otherFacebookAccount: {
     login: 'hubjbxj_valtchanovescu_1468245451@tfbnw.net',

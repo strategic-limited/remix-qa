@@ -9,7 +9,6 @@ module.exports = {
     specHelper.prepareClient(client);
     // Step 1 - open facebook and login.
     specHelper.loginToFb(client, config.facebookAccounts.real, true);
-    specHelper.cancelAppInFb(client);
     // Step 2 - open video remix in new window and Login.
     specHelper.loginToVr(client);
   },
@@ -41,7 +40,7 @@ module.exports = {
     personalizationModalSection.click('@next1');
 
     // Step 8 - Social campaign login with facebook
-    personalizationModalSection.expect.element('@connectWithFbButton').to.be.visible.before(6000);
+    personalizationModalSection.expect.element('@connectWithFbButton').to.be.visible.before(16000);
     personalizationModalSection.click('@connectWithFbButton');
 
     //Step 9 - facebook App Approval
@@ -116,8 +115,8 @@ module.exports = {
 
   after(client) {
     // cancel 2 apps
-    specHelper.cancelAppInFb(client);
-    specHelper.cancelAppInFb(client);
+    specHelper.cancelAppInFb(client, config.facebookApps.publisher);
+    specHelper.cancelAppInFb(client, config.facebookApps.viewer);
 
     client.end();
   }

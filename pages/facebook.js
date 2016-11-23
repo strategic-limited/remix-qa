@@ -11,7 +11,6 @@ module.exports = {
     emailField: 'input#email',
     passwordField: 'input#pass',
     submitButton: 'input[type="submit"]',
-    appDiv: 'div#u_1_0',
     removeAppLink: {
       selector: '//a[contains(text(),"Remove App")]',
       locateStrategy: 'xpath'

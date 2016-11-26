@@ -1,386 +1,235 @@
-var host = 'https://www.facebook.com/';
-module.exports =
-{
-
-  'Add all Social Plugins and publish in FB tab': function(client)
-   {
-
-// Step 1 - open facebook and login.
-
-             client
-     		 .windowMaximize()
-             .url(host)
-     	     .waitForElementPresent("body" , 3000)
-     		 .useXpath()
-             .setValue("//input[@id='email']","test15july@gmail.com")
-             .setValue("//input[@id='pass']","Abcdefgh@123")
-     		 .waitForElementPresent("//input[@type='submit']" , 3000)
-             .click("//input[@type='submit']")
-  //          .waitForElementPresent("//div[@id='u_0_2']" , 4000)
-
-// Step 2 - open video remix in new window and Login.
-
-             .execute(function(newWindow)
-           	{
-                       window.open('https://app.videoremix.io/login', null, "height=1024,width=1524");
-             }, [host])
-
-             .window_handles(function(result)
-           	{
-                           var temp = result.value[1];
-                           this.switchWindow(temp);
-             })
-
-           	.useCss()
-           	.waitForElementVisible('body', 3000)
-           	.useXpath()
-            .waitForElementPresent("//input[@name='uid']" , 2000)
-            .setValue("//input[@name='uid']","test03@gmail.com")
-            .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-         	.click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-            .pause(3000)
-
-
-/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
-                              .useCss()
-                              .waitForElementVisible('body', 3000)
-                              .useXpath()
-                              .waitForElementPresent("//h2" , 3000)
-                              .click("//button[@title='Close']")
-                              .useCss()
-                              .waitForElementVisible('body', 2000) */
-
-// Step 4 - Open remix Editor
-
-             .url("https://app.videoremix.io/editor/57dbadf3ebb1840003d518f9/remix")
-             .useXpath()
-             .pause(3000)
-             .pause(5000)
-          /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-              .waitForElementVisible("//button[@type='button']", 2000)
-              .click("//button[@type='button']") */                 // this has been removed from editor
-              .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 30000)
-              .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-              .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-              .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-              .pause(3000)
-              .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-              .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
-
-// Step 5 - Add all social plugins
-
-              .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-              .pause(5000)
-              .click("//span[@class='icon icon-white icon-plus']")
-              .pause(3000)
-              .waitForElementVisible("//span[contains(text(),'social')]", 3000)
-
-          //add like plugin
-
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .waitForElementVisible("//div[contains(text(),'Like')]", 5000)
-
-
-                    .click("//div[contains(text(),'Like')]")
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:04.20")
-
-                    .waitForElementPresent("//input[@data-manifest-key='start']", 3000)
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:00.00")
-
-
- // add comments plugin
-
-             .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-             .pause(5000)
-             .click("//span[@class='icon icon-white icon-plus']")
-             .click("//span[contains(text(),'social')]")
-             .pause(6000)
-             .click("//fieldset/select")
-             .click("//option[@value='fb-comments']")
-
-             .pause(4000)
-             .click("//span[@class='icon icon-only icon-x']")
-             .pause(4000)
-
-             .click("//div[contains(text(),'Comments')]")
-             .click("//input[@data-manifest-key='end']")
-             .clearValue("//input[@data-manifest-key='end']")
-             .setValue("//input[@data-manifest-key='end']", "0:08.10")
-
-             .waitForElementPresent("//input[@data-manifest-key='start']", 3000)
-             .click("//input[@data-manifest-key='start']")
-             .clearValue("//input[@data-manifest-key='start']")
-             .setValue("//input[@data-manifest-key='start']", "0:05.65")
-
-  //add page plugin
-
-             .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-             .pause(5000)
-             .click("//a[(contains(text(),'Elements'))]")
-             .waitForElementVisible("//span[contains(text(),'social')]",4000)
-             .click("//span[contains(text(),'social')]")
-             .pause(6000)
-             .click("//fieldset/select")
-             .click("//option[@value='fb-page']")
-
-             .pause(4000)
-             .click("//span[@class='icon icon-only icon-x']")
-             .pause(4000)
-
-             .click("//div[contains(text(),'Page')]")
-             .click("//input[@data-manifest-key='end']")
-             .clearValue("//input[@data-manifest-key='end']")
-             .setValue("//input[@data-manifest-key='end']", "0:10.10")
-
-             .click("//span[@class='icon icon-only icon-x']")
-             .pause(3000)
-             .click("//div[contains(text(),'Page')]")
-             .click("//input[@data-manifest-key='start']")
-             .clearValue("//input[@data-manifest-key='start']")
-             .setValue("//input[@data-manifest-key='start']", "0:08.15")
-
-
-  //add embed comments
-
-             .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-             .pause(5000)
-             .click("//span[@class='icon icon-white icon-plus']")
-             .click("//span[contains(text(),'social')]")
-             .pause(6000)
-             .click("//fieldset/select")
-             .click("//option[@value='fb-comment-embed']")
-
-             .pause(4000)
-             .click("//span[@class='icon icon-only icon-x']")
-             .pause(4000)
-
-             .click("//div[contains(text(),'Embedded Comments')]")
-             .click("//input[@data-manifest-key='end']")
-             .clearValue("//input[@data-manifest-key='end']")
-             .setValue("//input[@data-manifest-key='end']", "0:12.10")
-
-             .click("//span[@class='icon icon-only icon-x']")
-             .pause(3000)
-             .click("//div[contains(text(),'Embedded Comments')]")
-             .click("//input[@data-manifest-key='start']")
-             .clearValue("//input[@data-manifest-key='start']")
-             .setValue("//input[@data-manifest-key='start']", "0:10.17")
-
-
-  //add embed posts
-
-            .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-            .pause(5000)
-            .click("//span[@class='icon icon-white icon-plus']")
-            .click("//span[contains(text(),'social')]")
-            .pause(6000)
-            .click("//fieldset/select")
-            .click("//option[@value='fb-post']")
-
-            .pause(4000)
-            .click("//span[@class='icon icon-only icon-x']")
-            .pause(4000)
-            .click("//div[contains(text(),'Post')]")
-
-            .click("//input[@data-manifest-key='end']")
-            .clearValue("//input[@data-manifest-key='end']")
-            .setValue("//input[@data-manifest-key='end']", "0:14.20")
-
-            .click("//span[@class='icon icon-only icon-x']")
-            .pause(3000)
-            .click("//div[contains(text(),'Post')]")
-            .click("//input[@data-manifest-key='start']")
-            .clearValue("//input[@data-manifest-key='start']")
-            .setValue("//input[@data-manifest-key='start']", "0:12.15")
-            
-// Step 5 - remix editor - save video
-
-            .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-            .click("//button[contains(text(),'Save')]")
-            .setValue("//input[@class='input title-input']",new Date())
-            .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-            .click("//span[contains(text(),'Save')]")
-            .pause(3000)
-
-
-// Step 6 - Go to Social Campaign
-
-            .pause(4000)
-            .waitForElementVisible("//a[@id='embedSocialBtn']", 2000)
-            .click("//a[@id='embedSocialBtn']")
-            .pause(10000)
-
-  // Step 7 - verify Social campaign and move to next step
-
-            .window_handles(function(result)
-             {
-                     var temp = result.value[2];
-                    this.switchWindow(temp);
-             })
-
-            .waitForElementVisible("//div[@id='personalization-modal']", 10000)
-            .click("//div[@id='personalization-modal']")
-            .waitForElementVisible("//a[@id='hideform1']",10000)
-            .click("//a[@id='hideform1']")
-
-// Step 8 - Social campaign login with facebook
-
-             .waitForElementVisible("//a[@id='connectWithFbButton']", 5000)
-             .click("//a[@id='connectWithFbButton']")
-             .pause(4000)
-
-  //Step 9 - facebook App Approval
-
-            .window_handles(function(result)
-             {
-              var temp = result.value[2];
-              this.switchWindow(temp);
-
-              })
-
-              .useCss()
-              .waitForElementVisible('body', 3000)
-              .useXpath()
-              .waitForElementPresent("//button[@name='__CONFIRM__']", 5000)
-              .click("//button[@name='__CONFIRM__']")
-              .pause(10000)
-              .click("//button[@name='__CONFIRM__']")
-              .window_handles(function(result)
-
-               {
-
-                var temp = result.value[1];
-                this.switchWindow(temp);
-
-               })
-
-  // Step 8 - Social campaign facebook pages - make a selection
-
-            .waitForElementVisible("//select[@id='fbTabs']", 7000)
-            .click("//select[@id='fbTabs']")
-            .pause(2000)
-            .click("//option[@value='newTab']")
-            .keys(['\uE006'])
-            .clearValue("//input[@id='fbTabName']")
-            .setValue("//input[@id='fbTabName']" , "Test video")
-            .pause(4000)
-            .click("//a[@id='showPostForm']")
-            .pause(4000)
-
-            .getValue("//input[@id='fbPostTitle']", function(result1)
-              {
-                fieldValue1 = result1.value;
-                console.log(fieldValue1);
-              })
-
-             .click("//a[@id='done4']")
-             .pause(15000)
-             .keys(['\uE006'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE004'])
-             .keys(['\uE006'])
-             .pause(5000)
-
-  // Step 9  - open facebook and go to timeline
-
-            .url("https://www.facebook.com/")
-            .pause(5000)
-            .waitForElementVisible("//a[@data-testid='blue_bar_profile_link']", 5000)
-            .click("//a[@data-testid='blue_bar_profile_link']")
-            .pause(5000)
-
-            .waitForElementVisible("(//div[@class='mbs _6m6 _2cnj _5s6c']/a)[1]", 8000)
-
-            .getText("(//div[@class='mbs _6m6 _2cnj _5s6c']/a)[1]", function(result2)
-              {
-                fieldValue2 = result2.value;
-                console.log(fieldValue2);
-                client.assert.equal(fieldValue1, fieldValue2)
-              })
-
-
-  // Step - Click on the Post and user get redirect to FB tab
-
-            .click("(//div[@class='_6l- __c_'])[1]")
-            .pause(8000)
-
-            .window_handles(function(result)
-              {
-               var temp = result.value[2];
-               this.switchWindow(temp);
-              })
-
-             .useCss()
-             .waitForElementVisible('body', 3000)
-             .useXpath()
-             .waitForElementVisible("//button[@name='__CONFIRM__']", 8000)
-             .click("//button[@name='__CONFIRM__']")
-             .pause(30000)
-             .execute('scrollTo(0,3000)')
-
-               /*.window_handles(function(result)
-                {
-                   var temp = result.value[1];
-                   this.switchWindow(temp);
-                })*/
-
-
-             .frame(2, function() {
-              client
-             .pause(5000)
-             .waitForElementVisible("//span[@id='controls-play']", 10000)
-             .click("//span[@id='controls-play']")
-             .pause(20000)
-
-              //        .click("//span[@id='controls-play']")
-            //          .pause(4000)
-              //          .click("//span[@id='controls-play']")
-             //          .pause(4000)
-             .waitForElementPresent("//span[contains(text(),'0:16')][@id='controls-currenttime']", 3000)
-                })
-
-  // step 8 - navigate to facebook and cancel the VR App
-
-             .url("https://www.facebook.com/settings?tab=applications")
-             .pause(10000)
-             .waitForElementVisible("(//div[@role='button'])[1]", 5000)
-             .pause(7000)
-             .click("(//div[@role='button'])[1]")
-             .pause(3000)
-             .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-             .click("//a[contains(text(),'Remove App')]")
-             .pause(3000)
-             .waitForElementVisible("//span[contains(text(),'Remove VidCloud Publisher?')]", 5000)
-             .click("//input[@name='ok']")
-             .pause(5000)
-
-             .window_handles(function(result)
-              {
-                var temp = result.value[2];
-                this.switchWindow(temp);
-              })
-
-             .waitForElementVisible("//div[contains(text(), 'VidCloud.io')]", 5000)
-             .pause(7000)
-             .click("//div[contains(text(), 'VidCloud.io')]")
-             .pause(3000)
-             .waitForElementVisible("//a[contains(text(),'Remove App')]", 5000)
-             .click("//a[contains(text(),'Remove App')]")
-             .waitForElementVisible("//span[contains(text(),'Remove VidCloud.io?')]", 5000)
-             .click("//input[@name='ok']")
-             .pause(6000)
-
-             .end();
-
-      }
+'use strict';
+
+const config = require('../config/config');
+const specHelper = require('../lib/spec-helper');
+
+module.exports = {
+
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - open facebook and login.
+    specHelper.loginToFb(client, config.facebookAccounts.real);
+    // Step 2 - open video remix in new window and Login.
+    specHelper.loginToVr(client);
+  },
+
+  'Add all Social Plugins and publish in FB tab'(client) {
+
+    let fieldValue1;
+    let fieldValue2;
+
+    const editorPage = specHelper.openEditorPage(client,
+      'https://app.videoremix.io/editor/57dbadf3ebb1840003d518f9/remix');
+
+    editorPage.expect.element('@elementsTab').to.be.visible.before(3000);
+    editorPage.click('@elementsTab');
+
+    // Step 5 - Add all social plugins
+
+    //add like plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
+
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+
+    editorPage.expect.element('@socialLikeDiv').to.be.visible.before(6000);
+    editorPage.click('@socialLikeDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:04.20');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:00.00');
+
+
+    // add comments plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
+
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypeCommentsOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
+
+    editorPage.expect.element('@socialCommentsDiv').to.be.visible.before(2000);
+    editorPage.click('@socialCommentsDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:08.10');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:05.65');
+
+
+    //add page plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
+
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypePageOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
+
+    editorPage.expect.element('@socialPageDiv').to.be.visible.before(2000);
+    editorPage.click('@socialPageDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:10.10');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:08.15');
+
+
+    //add embed comments
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
+
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypeEmbeddedCommentsOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
+
+    editorPage.expect.element('@socialEmbeddedCommentsDiv').to.be.visible.before(2000);
+    editorPage.click('@socialEmbeddedCommentsDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:12.10');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:10.17');
+
+
+    //add embed posts
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
+
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypePostOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
+
+    editorPage.expect.element('@socialPostDiv').to.be.visible.before(2000);
+    editorPage.click('@socialPostDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:14.20');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:12.15');
+
+    // Step 5 - remix editor - save video
+    editorPage.saveVideo();
+
+    // Step 6 - Go to Social Campaign
+    editorPage.expect.element('@produceTab').to.be.visible.before(3000);
+    editorPage.click('@produceTab');
+
+    editorPage.expect.element('@socialCampaignButton').to.be.visible.before(5000);
+    editorPage.click('@socialCampaignButton');
+
+    // Step 7 - verify Social campaign and move to next step
+    editorPage.expect.section('@personalizationModal').to.be.visible.before(10000);
+
+    const personalizationModalSection = editorPage.section.personalizationModal;
+
+    personalizationModalSection.expect.element('@next1').to.be.visible.before(100);
+    personalizationModalSection.click('@next1');
+
+    // Step 8 - Social campaign login with facebook
+    personalizationModalSection.expect.element('@connectWithFbButton').to.be.visible.before(6000);
+    personalizationModalSection.click('@connectWithFbButton');
+
+    //Step 9 - facebook App Approval
+    specHelper.switchToLastWindow(client);
+
+    const facebookPopupPage = client.page.facebookPopup();
+    facebookPopupPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPopupPage.click('@confirmButton');
+    client.pause(3000);
+    facebookPopupPage.click('@confirmButton');
+
+    specHelper.switchWindowByIdx(client, 0);
+
+    personalizationModalSection.expect.element('@fbTabsList').to.be.visible.before(8000);
+    personalizationModalSection.click('@fbTabsList');
+
+    // Step 8 - Social campaign facebook pages - make a selection
+    personalizationModalSection.click('@fbNewTabOption');
+    specHelper.pressEnter(client);
+
+    personalizationModalSection.clearValue('@fbTabName');
+    personalizationModalSection.setValue('@fbTabName', 'Test video');
+
+    personalizationModalSection.expect.element('@showPostFormButton').to.be.visible.before(3000);
+    personalizationModalSection.click('@showPostFormButton');
+    personalizationModalSection.expect.element('@fbPostTitle').to.be.visible.before(3000);
+    personalizationModalSection.getValue('@fbPostTitle', function(result) {
+      fieldValue1 = result.value;
+      console.log(fieldValue1);
+    });
+
+    personalizationModalSection.click('@shareButton');
+
+    client.pause(10000);
+    specHelper.pressEnter(client);
+    for (let i = 0; i < 7; i++) {
+      specHelper.pressTab(client);
+    }
+    specHelper.pressEnter(client);
+    client.pause(5000);
+
+    // Step 9  - open facebook and go to timeline
+    const facebookPage = client.page.facebook();
+    facebookPage.navigate();
+
+    facebookPage.expect.element('@profileLink').to.be.visible.before(5000);
+    facebookPage.click('@profileLink');
+
+    const facebookPostPage = client.page.facebookPost();
+    facebookPostPage.expect.element('@postTitleDiv').to.be.visible.before(8000);
+    facebookPostPage.getText('@postTitleDiv', function(result) {
+      fieldValue2 = result.value;
+      console.log(fieldValue2);
+      client.assert.equal(fieldValue1, fieldValue2)
+    });
+    facebookPostPage.expect.element('@postLink').to.be.visible.before(1000);
+    facebookPostPage.openPost();
+
+    specHelper.switchToLastWindow(client);
+
+    facebookPostPage.expect.element('@confirmButton').to.be.visible.before(5000);
+    facebookPostPage.confirm();
+    facebookPostPage.expect.element('@videoFrame').to.be.visible.before(15000);
+
+    client.frame(2);
+    const playbackPage = client.page.playback();
+    playbackPage.expect.element('@playButton').to.be.visible.before(20000);
+    playbackPage.click('@playButton');
+    client.pause(4000);
+    playbackPage.click('@playButton');
+
+  },
+
+  after(client) {
+    // cancel 2 apps
+    specHelper.cancelAppInFb(client, config.facebookApps.publisher);
+    specHelper.cancelAppInFb(client, config.facebookApps.viewer);
+
+    client.end();
+  }
+
 };

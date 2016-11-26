@@ -2,8 +2,6 @@
 
 const specHelper = require('../lib/spec-helper');
 
-let fieldValue;
-
 module.exports = {
 
   before(client) {

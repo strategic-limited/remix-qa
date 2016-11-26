@@ -1,226 +1,160 @@
-var host = 'https://app.videoremix.io/login';
+'use strict';
 
-var fieldValue;
-module.exports =
-{
+const specHelper = require('../lib/spec-helper');
 
-  'Add all Social Plugins and check in playback': function(client)
-   {
+let fieldValue;
 
-// Step 1 - Login to VR editor
-      client
-      .windowMaximize()
-      .url(host)
-      .useCss()
-      .waitForElementVisible('body', 3000)
-      .useXpath()
-      .waitForElementPresent("//input[@name='uid']" , 2000)
-      .setValue("//input[@name='uid']","test03@gmail.com")
-      .setValue("(//input[@name='password'])[1]","Abcdefgh@123")
-      .click("(//button[@ng-click='user.password && submitPassword()'])[2]")
-      .pause(3000)
+module.exports = {
 
-/* // Step 2 -  after remix login closing pop up. (This functionality has been removed)
-        .useCss()
-        .waitForElementVisible('body', 3000)
-        .useXpath()
-        .waitForElementPresent("//h2" , 3000)
-        .click("//button[@title='Close']")
-        .useCss()
-        .waitForElementVisible('body', 2000) */
+  before(client) {
+    specHelper.prepareClient(client);
+    // Step 1 - Login to VR editor
+    specHelper.loginToVr(client);
+  },
 
-// Step 4 - Open remix Editor
+  'Add all Social Plugins and check in playback'(client) {
 
-          .url("https://app.videoremix.io/editor/57dbadf3ebb1840003d518f9/remix")
-          //.useXpath()
-          .pause(5000)
-        /* .waitForElementVisible("//div[@id='tutorialFirstRunBody']", 20000)
-          .waitForElementVisible("//button[@type='button']", 2000)
-          .click("//button[@type='button']") */                 // this has been removed from editor
-          .waitForElementVisible("//strong[contains(text(),'Welcome!')]", 30000)
-          .waitForElementVisible("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", 3000)
-          .setValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']", "youtube")
-          .clearValue("//textarea[@placeholder='Paste a Clyp, SoundCloud, Vimeo, HTML5 media, image link']")
-          .pause(3000)
-          .waitForElementVisible("//div[contains(text(),'Step 2, Drag your media to the timeline.')]", 3000)
-          .click("//div[contains(text(),'Step 2, Drag your media to the timeline.')]")
+    const editorPage = specHelper.openEditorPage(client,
+      'https://app.videoremix.io/editor/57dbadf3ebb1840003d518f9/remix');
 
-// Step 5 - Add all social plugins
+    editorPage.expect.element('@elementsTab').to.be.visible.before(3000);
+    editorPage.click('@elementsTab');
 
-                    .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-                    .pause(5000)
-                    .click("//span[@class='icon icon-white icon-plus']")
-                    .pause(3000)
-                    .waitForElementVisible("//span[contains(text(),'social')]", 3000)
+    // Step 5 - Add all social plugins
 
-          //add like plugin
+    //add like plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
 
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .waitForElementVisible("//div[contains(text(),'Like')]", 5000)
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+
+    editorPage.expect.element('@socialLikeDiv').to.be.visible.before(6000);
+    editorPage.click('@socialLikeDiv');
+
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:04.20');
+
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:00.00');
 
 
-                    .click("//div[contains(text(),'Like')]")
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:04.20")
+    // add comments plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
 
-                    .waitForElementPresent("//input[@data-manifest-key='start']", 3000)
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:00.00")
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypeCommentsOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
 
+    editorPage.expect.element('@socialCommentsDiv').to.be.visible.before(2000);
+    editorPage.click('@socialCommentsDiv');
 
-         // add comments plugin
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:08.10');
 
-                    .waitForElementPresent("//span[@class='icon icon-white icon-plus']", 3000)
-                    .pause(5000)
-                    .click("//span[@class='icon icon-white icon-plus']")
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .click("//fieldset/select")
-                    .click("//option[@value='fb-comments']")
-
-                    .pause(4000)
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(4000)
-
-                    .click("//div[contains(text(),'Comments')]")
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:08.10")
-
-                    .waitForElementPresent("//input[@data-manifest-key='start']", 3000)
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:05.65")
-
-          //add page plugin
-
-                    .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-                    .pause(5000)
-                    .click("//a[(contains(text(),'Elements'))]")
-                    .waitForElementVisible("//span[contains(text(),'social')]",4000)
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .click("//fieldset/select")
-                    .click("//option[@value='fb-page']")
-
-                    .pause(4000)
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(4000)
-
-                    .click("//div[contains(text(),'Page')]")
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:10.10")
-
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(3000)
-                    .click("//div[contains(text(),'Page')]")
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:08.15")
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:05.65');
 
 
-          //add embed comments
+    //add page plugin
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
 
-                    .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-                    .pause(5000)
-                    .click("//span[@class='icon icon-white icon-plus']")
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .click("//fieldset/select")
-                    .click("//option[@value='fb-comment-embed']")
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypePageOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
 
-                    .pause(4000)
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(4000)
+    editorPage.expect.element('@socialPageDiv').to.be.visible.before(2000);
+    editorPage.click('@socialPageDiv');
 
-                    .click("//div[contains(text(),'Embedded Comments')]")
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:12.10")
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:10.10');
 
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(3000)
-                    .click("//div[contains(text(),'Embedded Comments')]")
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:10.17")
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:08.15');
 
 
-          //add embed posts
+    //add embed comments
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
 
-                    .waitForElementVisible("//span[@class='icon icon-white icon-plus']", 3000)
-                    .pause(5000)
-                    .click("//span[@class='icon icon-white icon-plus']")
-                    .click("//span[contains(text(),'social')]")
-                    .pause(6000)
-                    .click("//fieldset/select")
-                    .click("//option[@value='fb-post']")
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypeEmbeddedCommentsOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
 
-                    .pause(4000)
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(4000)
-                    .click("//div[contains(text(),'Post')]")
+    editorPage.expect.element('@socialEmbeddedCommentsDiv').to.be.visible.before(2000);
+    editorPage.click('@socialEmbeddedCommentsDiv');
 
-                    .click("//input[@data-manifest-key='end']")
-                    .clearValue("//input[@data-manifest-key='end']")
-                    .setValue("//input[@data-manifest-key='end']", "0:14.20")
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:12.10');
 
-                    .click("//span[@class='icon icon-only icon-x']")
-                    .pause(3000)
-                    .click("//div[contains(text(),'Post')]")
-                    .click("//input[@data-manifest-key='start']")
-                    .clearValue("//input[@data-manifest-key='start']")
-                    .setValue("//input[@data-manifest-key='start']", "0:12.15")
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:10.17');
 
 
-// Step 5 - remix editor - save video
+    //add embed posts
+    editorPage.expect.element('@socialElement').to.be.visible.before(3000);
+    editorPage.click('@socialElement');
 
-                    .waitForElementVisible("//button[contains(text(),'Save')]", 2000)
-                    .click("//button[contains(text(),'Save')]")
-                    .setValue("//input[@class='input title-input']",new Date())
-                    .waitForElementVisible("//span[contains(text(),'Save')]", 3000)
-                    .click("//span[contains(text(),'Save')]")
-                    .pause(3000)
+    editorPage.expect.element('@socialPluginTypeSelect').to.be.visible.before(3000);
+    editorPage.click('@socialPluginTypeSelect');
+    editorPage.click('@socialPluginTypePostOption');
+    client.pause(2000);
+    editorPage.click('@propertyXButton');
 
+    editorPage.expect.element('@socialPostDiv').to.be.visible.before(2000);
+    editorPage.click('@socialPostDiv');
 
-// Step -6 Click on Email Campaign and Verify
+    editorPage.click('@endInput');
+    editorPage.clearValue('@endInput');
+    editorPage.setValue('@endInput', '0:14.20');
 
-                    .waitForElementVisible("//a[@id='embedBtn']", 5000)
-                    .click("//a[@id='embedBtn']")
+    editorPage.click('@startInput');
+    editorPage.clearValue('@startInput');
+    editorPage.setValue('@startInput', '0:12.15');
 
-                    .window_handles(function(result)
-                                  {
-                                            var temp = result.value[2];
-                                            this.switchWindow(temp);
-                                  })
+    // Step 5 - remix editor - save video
+    editorPage.saveVideo();
 
-                    .waitForElementVisible("//div[@id='personalization-modal']", 10000)
-                    .click("//div[@id='personalization-modal']")
-                    .waitForElementVisible("//a[@id='hideform1']",10000)
-                    .click("//a[@id='hideform1']")
+    // Step -6 Click on Email Campaign and Verify
+    editorPage.expect.element('@emailCampaignButton').to.be.visible.before(3000);
+    editorPage.click('@emailCampaignButton');
 
-                    .waitForElementVisible("//label[@title='Custom / All Other Email Providers']", 6000)
-                    .click("//label[@title='Custom / All Other Email Providers']")
-                    .waitForElementVisible("//input[@id='resultUrl']", 6000)
-                    .getValue("//input[@id='resultUrl']", function(result)
-                                {
-                                  fieldValue = result.value;
-                                  console.log(fieldValue);
-                                  client.url(fieldValue);
+    editorPage.expect.section('@personalizationModal').to.be.visible.before(3000);
+    const personalizationModalSection = editorPage.section.personalizationModal;
 
-                                })
+    personalizationModalSection.expect.element('@next1').to.be.visible.before(10000);
+    personalizationModalSection.click('@next1');
 
-// Step -7 - Check in Playback
+    personalizationModalSection.expect.element('@customEmailProvider').to.be.visible.before(1000);
+    personalizationModalSection.click('@customEmailProvider');
 
-          .pause(3000)
-          .waitForElementVisible("//div[@id='controls-big-play-button']", 20000)
-          .click("//div[@id='controls-big-play-button']")
-          .pause(20000)
-          .waitForElementPresent("//span[contains(text(),'0:16')][@id='controls-currenttime']", 3000)
-          .end();
-        }
-  };
+    personalizationModalSection.expect.element('@resultUrlInput').to.be.visible.before(6000);
+    personalizationModalSection.getValue('@resultUrlInput', (result) => {
+      console.log(result.value);
+      const playbackPage = client.page.playback();
+      playbackPage.navigate(result.value);
+
+      playbackPage.expect.element('@bigPlayButton').to.be.visible.before(20000);
+      playbackPage.click('@bigPlayButton');
+    })
+  },
+
+  after(client) {
+    client.end();
+  }
+};

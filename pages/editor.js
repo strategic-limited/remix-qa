@@ -26,6 +26,11 @@ module.exports = {
     produceTab: 'a.butter-editor-header-share',
     advancedTab: 'a.advanced-tab',
 
+    propertyXButton: 'span.icon.icon-only.icon-x',
+
+    startInput: 'input[data-manifest-key="start"]',
+    endInput: 'input[data-manifest-key="end"]',
+
     adobeEditorButton: {
       selector: '//button[contains(text(),"Adobe Editor")]',
       locateStrategy: 'xpath'
@@ -36,6 +41,53 @@ module.exports = {
       locateStrategy: 'xpath'
     },
     lowerThirdsModalTitle: 'h3.combined-modal-title',
+
+    socialElement: {
+      selector: '//span[contains(text(),"social")]',
+      locateStrategy: 'xpath'
+    },
+    socialLikeDiv: {
+      selector: '//div[contains(text(),"Like")]',
+      locateStrategy: 'xpath'
+    },
+    socialCommentsDiv: {
+      selector: '//div[contains(text(),"Comments")]',
+      locateStrategy: 'xpath'
+    },
+    socialPageDiv: {
+      selector: '//div[contains(text(),"Page")]',
+      locateStrategy: 'xpath'
+    },
+    socialEmbeddedCommentsDiv: {
+      selector: '//div[contains(text(),"Embedded Comments")]',
+      locateStrategy: 'xpath'
+    },
+    socialPostDiv: {
+      selector: '//div[contains(text(),"Post")]',
+      locateStrategy: 'xpath'
+    },
+    socialPluginTypeSelect: {
+      selector: '//fieldset/select',
+      locateStrategy: 'xpath'
+    },
+    socialPluginTypeCommentsOption: {
+      selector: '//option[@value="fb-comments"]',
+      locateStrategy: 'xpath'
+    },
+    socialPluginTypePageOption: {
+      selector: '//option[@value="fb-page"]',
+      locateStrategy: 'xpath'
+    },
+    socialPluginTypeEmbeddedCommentsOption: {
+      selector: '//option[@value="fb-comment-embed"]',
+      locateStrategy: 'xpath'
+    },
+    socialPluginTypePostOption: {
+      selector: '//option[@value="fb-post"]',
+      locateStrategy: 'xpath'
+    },
+
+
     imageElement: {
       selector: '//span[contains(text(),"image")]',
       locateStrategy: 'xpath'

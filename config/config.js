@@ -29,15 +29,5 @@ module.exports = {
     viewer: {
       id: '701751126630371'
     }
-  },
-  // publisher
-  otherFacebookAccount: {
-    login: 'hubjbxj_valtchanovescu_1468245451@tfbnw.net',
-    password: 'Abcdefgh@123'
-  },
-  // real account
-  anotherFacebookAccount: {
-    login: 'test15july@gmail.com',
-    password: 'Abcdefgh@123'
   }
 };

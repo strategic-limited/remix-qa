@@ -131,6 +131,10 @@ module.exports = {
       selector: '//input[@class="input title-input"]',
       locateStrategy: 'xpath'
     },
+    savePopupAllowFacebookCheckBox: {
+      selector: '//input[@id="allow-fb"]',
+      locateStrategy: 'xpath'
+    },
     getMediaButton: '#get-media-btn',
     savePopupSaveButton: {
       selector: '//span[contains(text(),"Save")]',

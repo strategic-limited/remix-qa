@@ -59,14 +59,6 @@ module.exports =
           .frame('oauth2relay1198118475')
           .waitForElementVisible("//select[@id='embed1']", 10000)
           .end();
-//--------------------------------------------------------------
-
-          .waitForElementVisible("//button[contains(text(),'Youzign')]", 6000)
-          .click("//button[contains(text(),'Youzign')]")
-          .waitForElementVisible("//h4[contains(text(),'Your Designs')]", 6000)
-          .waitForElementVisible("(//div[@class='thumb-container'])[5]")
-          .click("(//div[@class='thumb-container'])[5]")
-          //take screenshot
 
         }
   };
